@@ -1,15 +1,21 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:ecommerce_application/controller/login2Controller.dart';
+import 'package:ecommerce_application/view/widget/auth/customtextform.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'homepage.dart';
+import '../../core/function/validinput.dart';
 import 'signup2.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Login2ControllerImp controller = Get.put(Login2ControllerImp());
+
+    //not sure about it
+    // var _keyValidationForm = GlobalKey<FormState>();
+
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -37,38 +43,91 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      FadeInUp(
-                          duration: Duration(milliseconds: 1000),
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold),
-                          )),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      FadeInUp(
-                          duration: Duration(milliseconds: 1200),
-                          child: Text(
-                            "Login to your account",
-                            style: TextStyle(
-                                fontSize: 15, color: Colors.grey[700]),
-                          )),
-                    ],
+                  Form(
+                    key : controller.formState,
+                    child: Column(
+                      children: <Widget>[
+                        FadeInUp(
+                            duration: Duration(milliseconds: 1000),
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
+                            )),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FadeInUp(
+                            duration: Duration(milliseconds: 1200),
+                            child: Text(
+                              "Login to your account",
+                              style: TextStyle(
+                                  fontSize: 15, color: Colors.grey[700]),
+                            )),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: <Widget>[
-                        FadeInUp(
-                            duration: Duration(milliseconds: 1200),
-                            child: makeInput(label: "Email")),
-                        FadeInUp(
-                            duration: Duration(milliseconds: 1300),
-                            child: makeInput(
-                                label: "Password", obscureText: true)),
+                        SizedBox(
+                          height: 35,
+                        ),
+                        CustomTextForm(
+                          isNumber: false,
+                          valid: (val) {
+                            return validInput(val!, 5, 50, "email");
+                          },
+                          hintText: '6'.tr,
+                          labelText: '5'.tr,
+                          iconData: Icons.email_outlined,
+                          controller: controller.email,
+                          focusnode: controller.emailFocus,
+                        ),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        // CustomTextForm(
+                        //   isNumber: false,
+                        //   controller: controller.password,
+                        //   hintText: '8'.tr,
+                        //   labelText: '7'.tr,
+                        //   iconData: Icons.lock_outlined,
+                        //   valid: (val) {
+                        //     return validInput(val!, 8, 16, "password");
+                        //   },
+                        // ),
+
+
+                       GetBuilder<Login2ControllerImp>(
+                    builder: (controller) => CustomTextForm(
+                      obscureText: controller.isShow,
+                      onTapIcon: () {
+                        controller.showPassword();
+                      },
+                      isNumber: false,
+                      valid: (val) {
+                        return validInput(val!, 8, 16, "password");
+                      },
+                      hintText: '8'.tr,
+                      labelText: '7'.tr,
+                      iconData: Icons.lock_outlined,
+                      controller: controller.password,
+                      focusnode: controller.passFocus,
+                    ),
+                  ),
+
+
+
+                        SizedBox(
+                          height: 15,
+                        ),
+
+                        // FadeInUp(duration: Duration(milliseconds: 1200), child: makeInput(label: "Email")),
+                        // FadeInUp(duration: Duration(milliseconds: 1300), child: makeInput(label: "Password", obscureText: true)),
                       ],
                     ),
                   ),
@@ -90,7 +149,7 @@ class LoginPage extends StatelessWidget {
                             minWidth: double.infinity,
                             height: 60,
                             onPressed: () {
-                              Get.to(HomePage());
+                              controller.login();
                             },
                             color: Colors.greenAccent,
                             elevation: 0,
