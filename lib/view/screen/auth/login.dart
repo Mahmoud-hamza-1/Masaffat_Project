@@ -15,154 +15,124 @@ import '../../widget/auth/custombodylabel.dart';
 import '../../widget/auth/logo.dart';
 import '../login2.dart';
 
-
-
 class Login extends StatelessWidget {
   const Login({super.key});
   @override
   Widget build(BuildContext context) {
     LoginControllerImp controller = Get.put(LoginControllerImp());
-    return
+    return Scaffold(
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   backgroundColor: Colors.white,
+      //   elevation: 0.0,
+      //   title: Text(
+      //     '2'.tr,
+      //     style: Theme.of(context)
+      //         .textTheme
+      //         .headlineLarge!
+      //         .copyWith(color: AppColor.grey),
+      //   ),
+      // ),
 
+      body:
 
+          // FittedBox(
+          //    fit: BoxFit.fill,
+          //   child: WillPopScope(
+          //     onWillPop: alertExitApp,
+          //     child:
 
-      Scaffold(
-
-
-
-
-        // appBar: AppBar(
-        //   centerTitle: true,
-        //   backgroundColor: Colors.white,
-        //   elevation: 0.0,
-        //   title: Text(
-        //     '2'.tr,
-        //     style: Theme.of(context)
-        //         .textTheme
-        //         .headlineLarge!
-        //         .copyWith(color: AppColor.grey),
-        //   ),
-        // ),
-
-
-        body: 
-
-
-
-        // FittedBox(
-        //    fit: BoxFit.fill,
-        //   child: WillPopScope(
-        //     onWillPop: alertExitApp,
-        //     child:
-
-            
-            
-             Container
-        
-             (
-
-               decoration: BoxDecoration(
+          Container(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/m.jpg"), // Replace with your image path
+            image: AssetImage(
+                "assets/images/m.jpg"), // Replace with your image path
             fit: BoxFit.cover,
           ),
         ),
-
-
-
-
-
-
-               child: Center(
-                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                  child: Form(
-                    key: controller.formState,
-                    child: ListView(
-                      children: [
-                        const Logo(),
-                        CustomMainLabel(
-                          mainLabel: '3'.tr,
-                        ),
-                        CustomBodyLabel(
-                          bodyLabel: '4'.tr,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        CustomTextForm(
-                          isNumber: false,
-                          valid: (val) {
-                            return validInput(val!, 5, 50, "email");
-                          },
-                          hintText: '6'.tr,
-                          labelText: '5'.tr,
-                          iconData: Icons.email_outlined,
-                          controller: controller.email,
-                        ),
-                        GetBuilder<LoginControllerImp>(
-                          builder: (controller) => CustomTextForm(
-                            obscureText: controller.isShow,
-                            onTapIcon: () {
-                              controller.showPassword();
-                            },
-                            isNumber: false,
-                            valid: (val) {
-                              return validInput(val!, 8, 16, "password");
-                            },
-                            hintText: '8'.tr,
-                            labelText: '7'.tr,
-                            iconData: Icons.lock_outlined,
-                            controller: controller.password,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            controller.goToForgetPassword();
-                          },
-                          child: Text(
-                            '9'.tr,
-                            textAlign: TextAlign.end,
-                          ),
-                        ),
-                        CustomButtonAuth(
-                          text: "10".tr,
-                          onPressed: () {
-                            controller.login();
-                          },
-                        ),
-
-                         CustomButtonAuth(
-                          text: "2nd login",
-                          onPressed: () {
-                            Get.to(LoginPage());
-                          },
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TextSignUpOrIn(
-                          text1: "11".tr,
-                          text2: "12".tr,
-                          onTap: () {
-                            controller.goToSignUp();
-                          },
-                        ),
-                      ],
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+            child: Form(
+              key: controller.formState,
+              child: ListView(
+                children: [
+                  const Logo(),
+                  CustomMainLabel(
+                    mainLabel: '3'.tr,
+                  ),
+                  CustomBodyLabel(
+                    bodyLabel: '4'.tr,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  CustomTextForm(
+                    isNumber: false,
+                    valid: (val) {
+                      return validInput(val!, 5, 50, "email");
+                    },
+                    hintText: '6'.tr,
+                    labelText: '5'.tr,
+                    iconData: Icons.email_outlined,
+                    controller: controller.email,
+                  ),
+                  GetBuilder<LoginControllerImp>(
+                    builder: (controller) => CustomTextForm(
+                      obscureText: controller.isShow,
+                      onTapIcon: () {
+                        controller.showPassword();
+                      },
+                      isNumber: false,
+                      valid: (val) {
+                        return validInput(val!, 8, 16, "password");
+                      },
+                      hintText: '8'.tr,
+                      labelText: '7'.tr,
+                      iconData: Icons.lock_outlined,
+                      controller: controller.password,
                     ),
                   ),
-                             
-                           ),
-               ),
-             ),
-                //),
-        );
+                  InkWell(
+                    onTap: () {
+                      controller.goToForgetPassword();
+                    },
+                    child: Text(
+                      '9'.tr,
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                  CustomButtonAuth(
+                    text: "10".tr,
+                    onPressed: () {
+                      controller.login();
+                    },
+                  ),
+                  CustomButtonAuth(
+                    text: "2nd login",
+                    onPressed: () {
+                      Get.to(LoginPage());
+                    },
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  TextSignUpOrIn(
+                    text1: "11".tr,
+                    text2: "12".tr,
+                    onTap: () {
+                      controller.goToSignUp();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      //),
+    );
 
-
-   // );
-
-
-
-
+    // );
   }
 }

@@ -31,18 +31,14 @@ class SignUp extends StatelessWidget {
       // ),
 
       body: GetBuilder<SignUpControllerImp>(
-        builder: (controller) => 
-        
-        
-        Container(
-
-              decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/m.jpg"), // Replace with your image path
-            fit: BoxFit.cover,
+        builder: (controller) => Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                  "assets/images/m.jpg"), // Replace with your image path
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-
           child: Center(
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 30),
@@ -104,6 +100,7 @@ class SignUp extends StatelessWidget {
                           controller.signup();
                         },
                         text: '12'.tr,
+                        Radiuss: 50,
                       ),
                       const SizedBox(
                         height: 30,

@@ -44,21 +44,19 @@ class ResetPassword extends StatelessWidget {
                 height: 30,
               ),
               CustomTextForm(
-                isNumber: false,
-
-                valid:(val){
-                   return validInput(val!, 8, 16, "password");
-                } ,
+                  isNumber: false,
+                  valid: (val) {
+                    return validInput(val!, 8, 16, "password");
+                  },
                   controller: controller.password,
                   hintText: 'Enter Your Password'.tr,
                   labelText: 'Password'.tr,
                   iconData: Icons.lock_outlined),
               CustomTextForm(
-                isNumber: false,
-
-                valid:(val){
-                  return validInput(val!, 8, 17, "password");
-                } ,
+                  isNumber: false,
+                  valid: (val) {
+                    return validInput(val!, 8, 17, "password");
+                  },
                   controller: controller.password,
                   hintText: 'Rewrite Password'.tr,
                   labelText: 'Verification '.tr,
@@ -68,6 +66,7 @@ class ResetPassword extends StatelessWidget {
                   controller.goToSuccessResetPassword();
                 },
                 text: 'Save',
+                Radiuss: 50,
               ),
               const SizedBox(
                 height: 30,

@@ -13,7 +13,7 @@ class loginScreen extends StatelessWidget {
           width: double.infinity,
           decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
-              Color(0xffB81736),
+              Colors.white,
               Color(0xff281537),
             ]),
           ),
@@ -123,10 +123,7 @@ class loginScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold, color: Colors.grey),
                         ),
                         SizedBox(width: 10),
-
-                        
-                         
-                           Text(
+                        Text(
                           "Sign up",
                           style: TextStyle(
 
@@ -135,8 +132,6 @@ class loginScreen extends StatelessWidget {
                               fontSize: 17,
                               color: Colors.black),
                         ),
-                        
-                        
                       ],
                     ),
                   )
