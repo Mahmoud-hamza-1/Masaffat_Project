@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
-
 const purple = Color(0xFF6E5DE7);
 const background = Color(0xFFF6F9FF);
 const darkGrey = Color(0xFFBFBFBF);
