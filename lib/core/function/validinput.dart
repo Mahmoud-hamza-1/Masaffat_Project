@@ -16,6 +16,9 @@ validInput(String val, int min, int max, String type) {
     if (!GetUtils.isPhoneNumber(val)) {
       return "Enter Correct Phone Number";
     }
+
+
+    
   }
   if (val.isEmpty) {
     return "value Can't be Empty";

@@ -16,6 +16,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         centerTitle: true,
         title: Text(
           'Masaffat',
@@ -148,11 +149,8 @@ class HomePage extends StatelessWidget {
             Container(
               height: 300,
               color: Colors.grey[300],
-              child: Center(
-                child: Text(
-                  'Way Services Near You',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
+              child: Container(
+                child: Image.asset('assets/images/map.png'),
               ),
             ),
           ],
