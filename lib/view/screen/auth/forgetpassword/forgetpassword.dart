@@ -37,7 +37,7 @@ class ForgetPassword extends StatelessWidget {
               CustomMainLabel(
                 mainLabel: 'Check Email'.tr,
               ),
-            const  CustomBodyLabel(
+              const CustomBodyLabel(
                 bodyLabel:
                     'Please Enter Your Email Address To Receive a Verification Number',
               ),
@@ -45,10 +45,10 @@ class ForgetPassword extends StatelessWidget {
                 height: 30,
               ),
               CustomTextForm(
-                isNumber: false,
-                valid:(val){
-                   return validInput(val!, 5, 50, "email");
-                } ,
+                  isNumber: false,
+                  valid: (val) {
+                    return validInput(val!, 5, 50, "email");
+                  },
                   controller: controller.email,
                   hintText: '6'.tr,
                   labelText: '5'.tr,
@@ -58,6 +58,7 @@ class ForgetPassword extends StatelessWidget {
                   controller.goToVerifyCode();
                 },
                 text: 'Check',
+                Radiuss: 50,
               ),
               const SizedBox(
                 height: 30,

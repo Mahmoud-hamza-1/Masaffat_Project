@@ -111,7 +111,7 @@ class Login extends StatelessWidget {
                   CustomButtonAuth(
                     text: "2nd login",
                     onPressed: () {
-                      Get.to(loginScreen());
+                      Get.to(LoginPage());
                     },
                   ),
                   const SizedBox(
