@@ -15,7 +15,11 @@ abstract class Login2Controller extends GetxController {
 }
 
 class Login2ControllerImp extends Login2Controller {
+
   GlobalKey<FormState> formState = GlobalKey<FormState>();
+
+    final FocusNode emailFocus = FocusNode();
+    final FocusNode passFocus = FocusNode(); 
   late TextEditingController email;
   late TextEditingController password;
   bool isShow = true;
@@ -34,7 +38,8 @@ class Login2ControllerImp extends Login2Controller {
   login() async {
     var formData = formState.currentState;
     if (formData!.validate()) {
-      statusRequest = StatusRequest.loading;
+    print("donee");       
+    statusRequest = StatusRequest.loading;
       update();
       var response = await loginData.postData(password.text, email.text);
       print("=============controller $response");

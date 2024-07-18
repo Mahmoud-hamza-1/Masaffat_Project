@@ -1,8 +1,8 @@
 class AppRoute {
   // Auth
   static const String splash = '/SplashScreen';
-  static const String login = '/login';
-  static const String signUp = '/SignUp';
+  static const String login = '/LoginPage';
+  static const String signUp = '/SignupPage';
   static const String forgetPassword = '/forgetPassword';
   static const String verifyCode = '/verifyCode';
   static const String resetPassword = '/resetPassword';
