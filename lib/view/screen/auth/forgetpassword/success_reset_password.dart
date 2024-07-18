@@ -48,6 +48,7 @@ class SuccessResatPassword extends StatelessWidget {
               onPressed: () {
                 controller.goToPageLogin();
               },
+              Radiuss: 50,
             ),
           ],
         ),
