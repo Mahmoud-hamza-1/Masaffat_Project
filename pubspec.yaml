@@ -81,6 +81,7 @@ dependencies:
   google_sign_in: ^6.2.1
   device_preview: ^1.1.0
   responsive_builder: ^0.7.0
+  flutter_osm_plugin: ^1.2.0
   carousel_slider: ^4.2.1
 
 dev_dependencies:

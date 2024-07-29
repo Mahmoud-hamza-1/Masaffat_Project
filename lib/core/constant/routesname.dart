@@ -12,5 +12,7 @@ class AppRoute {
   static const String verifyCodeSignUp = '/verifyCodeSignUp';
   // OnBoarding
   static const String onboarding = '/onboarding';
+  //map
+  static const map = '/map';
+  static const parking = '/parking';
 }
-
