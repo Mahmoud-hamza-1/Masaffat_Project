@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/function/validinput.dart';
+import 'homepage.dart';
 import 'signup2.dart';
 
 class LoginPage extends StatelessWidget {
@@ -149,7 +150,8 @@ class LoginPage extends StatelessWidget {
                             minWidth: double.infinity,
                             height: 60,
                             onPressed: () {
-                              controller.login();
+                          
+                              Get.to(HomePage());
                             },
                             color: Colors.greenAccent,
                             elevation: 0,
