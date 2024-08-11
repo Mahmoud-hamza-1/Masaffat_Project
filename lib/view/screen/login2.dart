@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/function/validinput.dart';
+import 'homepage.dart';
 import 'signup2.dart';
 
 class LoginPage extends StatelessWidget {
@@ -14,7 +15,6 @@ class LoginPage extends StatelessWidget {
 
     //not sure about it
     // var _keyValidationForm = GlobalKey<FormState>();
-
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -44,7 +44,7 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Form(
-                    key : controller.formState,
+                    key: controller.formState,
                     child: Column(
                       children: <Widget>[
                         FadeInUp(
@@ -101,26 +101,23 @@ class LoginPage extends StatelessWidget {
                         //   },
                         // ),
 
-
-                       GetBuilder<Login2ControllerImp>(
-                    builder: (controller) => CustomTextForm(
-                      obscureText: controller.isShow,
-                      onTapIcon: () {
-                        controller.showPassword();
-                      },
-                      isNumber: false,
-                      valid: (val) {
-                        return validInput(val!, 8, 16, "password");
-                      },
-                      hintText: '8'.tr,
-                      labelText: '7'.tr,
-                      iconData: Icons.lock_outlined,
-                      controller: controller.password,
-                      focusnode: controller.passFocus,
-                    ),
-                  ),
-
-
+                        GetBuilder<Login2ControllerImp>(
+                          builder: (controller) => CustomTextForm(
+                            obscureText: controller.isShow,
+                            onTapIcon: () {
+                              controller.showPassword();
+                            },
+                            isNumber: false,
+                            valid: (val) {
+                              return validInput(val!, 8, 16, "password");
+                            },
+                            hintText: '8'.tr,
+                            labelText: '7'.tr,
+                            iconData: Icons.lock_outlined,
+                            controller: controller.password,
+                            focusnode: controller.passFocus,
+                          ),
+                        ),
 
                         SizedBox(
                           height: 15,
@@ -150,6 +147,7 @@ class LoginPage extends StatelessWidget {
                             height: 60,
                             onPressed: () {
                               controller.login();
+                              Get.to(HomePage());
                             },
                             color: Colors.greenAccent,
                             elevation: 0,
