@@ -1,8 +1,13 @@
-import 'dart:async';
-
+import 'package:ecommerce_application/controller/map/parking_controller.dart';
+import 'package:ecommerce_application/view/screen/map/map_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_bdaya/flutter_datetime_picker_bdaya.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:get/get.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
+import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 
 class ParkingPage extends StatefulWidget {
   const ParkingPage({super.key});
@@ -15,21 +20,19 @@ class _ParkingPageState extends State<ParkingPage> {
   bool isVis = true;
   var isLoading = false;
   var isResult = false;
-  Timer? _debounce;
   List<SearchInfo>? searchInfo;
   final searchController = TextEditingController();
   final node = FocusNode();
-  final GlobalKey _key = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final List<String>? recentSearchPlaces = null;
+  bool isGLoading = false;
+  final pageController = PageController();
+  var indexCheck = 0;
+  Duration checkIn = Duration.zero;
+  Duration checkOut = Duration.zero;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-
+    // final controller = Get.put(ParkingControllerImp());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hourly Parking'),
@@ -38,452 +41,433 @@ class _ParkingPageState extends State<ParkingPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: GetBuilder<ParkingControllerImp>(
+              init: ParkingControllerImp(),
+              builder: (controller) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          // Navigate to airport parking
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              border: BorderDirectional(
-                                  bottom: BorderSide(
-                                      color: Colors.grey, width: 1))),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.airplanemode_active),
-                              Text('Airport'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          // Navigate to hourly parking
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              border: BorderDirectional(
-                                  bottom: BorderSide(
-                                      color: Colors.teal, width: 3))),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.access_time),
-                              Text('Hourly'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          // Navigate to monthly parking
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              border: BorderDirectional(
-                                  bottom: BorderSide(
-                                      color: Colors.grey, width: 1))),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.calendar_today),
-                              Text('Monthly'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          // Navigate to event parking
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              border: BorderDirectional(
-                                  bottom: BorderSide(
-                                      color: Colors.grey, width: 1))),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.star),
-                              Text('Events'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              TapRegion(
-                onTapOutside: (event) {
-                  setState(() {
-                    isVis = true;
-                  });
-                },
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Where to?',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
+                        checkInButton(),
+                        const SizedBox(
+                          width: 15,
                         ),
-                        const SizedBox(height: 16),
-                        TextField(
-                          controller: searchController,
-                          onChanged: (value) {
-                            if (_debounce?.isActive ?? false)
-                              _debounce?.cancel();
-                            _debounce = Timer(const Duration(milliseconds: 500),
-                                () async {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              searchInfo = await addressSuggestion(value,
-                                  limitInformation: 15);
-                              setState(() {
-                                isLoading = false;
-                              });
-                            });
-                          },
-                          focusNode: node,
-                          // onTapOutside: (event) {
-                          //   node.unfocus();
-                          //   setState(() {
-                          //     isVis = true;
-                          //   });
-                          // },
-                          onTap: () async {
-                            // GeoPoint? p = await showSimplePickerLocation(
-                            //   context: context,
-                            //   isDismissible: true,
-                            //   title: "Title dialog",
-                            //   textConfirmPicker: "pick",
-                            // );
-                            setState(() {
-                              isVis = false;
-                            });
-
-                            return;
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const SearchDialog();
-                              },
-                            );
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(26)),
-                                borderSide:
-                                    BorderSide(color: Colors.grey[400]!)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(24)),
-                                borderSide:
-                                    BorderSide(color: Colors.grey[400]!)),
-                            hintText: 'Search by City, Address, Zone...',
-                            prefixIcon: const Icon(Icons.search),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        AnimatedSwitcher(
-                          switchInCurve: Curves.easeInOut,
-                          switchOutCurve: Curves.easeInOut,
-                          transitionBuilder: (child, animation) =>
-                              SizeTransition(
-                            sizeFactor: animation,
-                            child: child,
-                          ),
-                          duration: const Duration(milliseconds: 400),
-                          child: !isVis
-                              ? Column(
-                                  children: [
-                                    if (isLoading) ...[
-                                      const Padding(
-                                        padding: EdgeInsets.all(5),
-                                        child: Center(
-                                            child: CircularProgressIndicator()),
-                                      ),
-                                    ] else if (searchInfo != null &&
-                                        (searchController.text
-                                            .trim()
-                                            .isNotEmpty)) ...[
-                                      if (searchInfo!.isEmpty) ...[
-                                        const Center(
-                                            child: Text(
-                                          'no data available',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 17),
-                                        ))
-                                      ] else ...[
-                                        ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                              maxHeight: 300),
-                                          child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: searchInfo!.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                onTap: () {},
-                                                leading: Container(
-                                                    height: 45,
-                                                    width: 45,
-                                                    decoration: BoxDecoration(
-                                                      color:
-                                                          Colors.grey.shade200,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              7),
-                                                    ),
-                                                    child: const Icon(
-                                                      Icons
-                                                          .location_on_outlined,
-                                                      size: 30,
-                                                      weight: 2,
-                                                    )),
-                                                title: Text(
-                                                    '${searchInfo?[index].address?.name}'),
-                                                subtitle: Text(
-                                                  '${searchInfo?[index].address?.country ?? ''} ${searchInfo?[index].address?.city ?? ''}',
-                                                  style: TextStyle(
-                                                      color:
-                                                          Colors.grey.shade600,
-                                                      fontSize: 13),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ] else ...[
-                                      const SizedBox(height: 20),
-                                      const Text(
-                                        'Recent Searches',
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
-                                      ListView.builder(
-                                        itemCount: 1,
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) =>
-                                            ListTile(
-                                          leading: const Icon(Icons
-                                              .replay_circle_filled_outlined),
-                                          title:
-                                              const Text('دمشق ,جامع الايمان'),
-                                          onTap: () async {
-                                            searchController.text = 'ds';
-                                            setState(() {
-                                              isLoading = true;
-                                            });
-                                            searchInfo =
-                                                await addressSuggestion('ds',
-                                                    limitInformation: 20);
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ],
-                                )
-                              : null,
-                        ),
+                        checkOutButton(),
                       ],
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: () {
-                  navigator?.pushNamed('/map');
-                },
-                style: ElevatedButton.styleFrom(
-                  iconColor: Colors.red[600],
-                  padding: const EdgeInsets.all(16),
-                ),
-                
-                icon:IconButton(onPressed: (){
-                  
-                }, icon: Icon(Icons.my_location)),
-                //const Icon(Icons.my_location),
-                label: const Text(
-                  'Search Nearby Parking',
-                  style: TextStyle(color: Colors.black54, fontSize: 17),
-                ),
-              ),
-            ],
-          ),
+                    SizedBox(
+                      height: 250,
+                      child: PageView(
+                        controller: pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            indexCheck = index;
+                          });
+                        },
+                        children: [
+                          CupertinoTimerPicker(
+                            mode: CupertinoTimerPickerMode.hm,
+                            initialTimerDuration: checkIn,
+                            onTimerDurationChanged: (duration) {
+                              setState(() {
+                                checkIn = duration;
+                              });
+                            },
+                          ),
+                          CupertinoTimerPicker(
+                            mode: CupertinoTimerPickerMode.hm,
+                            initialTimerDuration: checkOut,
+                            onTimerDurationChanged: (duration) {
+                              setState(() {
+                                checkOut = duration;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    TapRegion(
+                      onTapOutside: (event) {
+                        setState(() {
+                          isVis = true;
+                        });
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Where to?',
+                                style: TextStyle(
+                                    fontSize: 22, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 16),
+                              searchField(controller),
+                              const SizedBox(height: 16),
+                              AnimatedSwitcher(
+                                switchInCurve: Curves.easeInOut,
+                                switchOutCurve: Curves.easeInOut,
+                                transitionBuilder: (child, animation) =>
+                                    SizeTransition(
+                                  sizeFactor: animation,
+                                  child: child,
+                                ),
+                                duration: const Duration(milliseconds: 400),
+                                child: !isVis
+                                    ? searchInformation(controller)
+                                    : null,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        bool serviceEnabled;
+                        LocationPermission permission;
+                        serviceEnabled =
+                            await Geolocator.isLocationServiceEnabled();
+                        if (!serviceEnabled) {
+                          permission = await Geolocator.checkPermission();
+                          if (permission == LocationPermission.denied) {
+                            permission = await Geolocator.requestPermission();
+                            if (permission == LocationPermission.denied) {
+                              // Permissions are denied, next time you could try
+                              // requesting permissions again (this is also where
+                              // Android's shouldShowRequestPermissionRationale
+                              // returned true. According to Android guidelines
+                              // your App should show an explanatory UI now.
+                              return Get.defaultDialog(
+                                title: 'error',
+                                middleText: 'Location permissions are denied',
+                              );
+                            }
+                            if (permission ==
+                                LocationPermission.deniedForever) {
+                              // Permissions are denied forever, handle appropriately.
+                              return Get.defaultDialog(
+                                title: 'error',
+                                middleText:
+                                    'Location permissions are permanently denied, we cannot request permissions.',
+                              );
+                            }
+                          }
+                          // Location services are not enabled don't continue
+                          // accessing the position and request users of the
+                          // App to enable the location services.
+                          // return Get.defaultDialog(
+                          //   title: 'error',
+                          //   middleText: 'Location services are disabled.',
+                          // );
+                        }
+
+                        // When we reach here, permissions are granted and we can
+                        // continue accessing the position of the device.
+                        setState(() {
+                          isGLoading = true;
+                        });
+                        final loc = await Geolocator.getCurrentPosition();
+                        final parkings = await controller.searchByCoordinates(
+                            GeoPoint(
+                                latitude: loc.latitude,
+                                longitude: loc.longitude));
+                        setState(() {
+                          isGLoading = false;
+                        });
+                        if (parkings == null) {
+                          // await Get.defaultDialog(
+                          //     title: "alert",
+                          //     middleText: "no parking for this place");
+                        } else {
+                          navigator?.push(MaterialPageRoute(
+                            builder: (context) {
+                              return MapScreen(
+                                parkings: parkings,
+                              );
+                            },
+                          ));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        iconColor: Colors.red[600],
+                        padding: const EdgeInsets.all(16),
+                      ),
+                      icon: const Icon(Icons.my_location),
+                      label: const Text(
+                        'Search Nearby Parking',
+                        style: TextStyle(color: Colors.black54, fontSize: 17),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    if (isGLoading) const LoadingWidget(),
+                  ],
+                );
+              }),
         ),
       ),
     );
   }
-}
 
-class SearchDialog extends StatefulWidget {
-  const SearchDialog({super.key});
-
-  @override
-  State<SearchDialog> createState() => _SearchDialogState();
-}
-
-class _SearchDialogState extends State<SearchDialog> {
-  var isLoading = false;
-  var isResult = false;
-  Timer? _debounce;
-  List<SearchInfo>? searchInfo;
-  final searchController = TextEditingController();
-
-  @override
-  void dispose() {
-    _debounce?.cancel();
-    searchController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Dialog(
-          insetPadding: const EdgeInsets.fromLTRB(40, 70, 40, 40),
-          insetAnimationDuration: const Duration(milliseconds: 500),
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: searchController,
-                  onChanged: (value) {
-                    if (_debounce?.isActive ?? false) _debounce?.cancel();
-                    _debounce =
-                        Timer(const Duration(milliseconds: 500), () async {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      searchInfo =
-                          await addressSuggestion(value, limitInformation: 20);
-
-                      setState(() {
-                        isLoading = false;
-                      });
-                    });
-                  },
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(26)),
-                        borderSide: BorderSide(color: Colors.grey[400]!)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(24)),
-                        borderSide: BorderSide(color: Colors.grey[400]!)),
-                    hintText: 'Search by City, Address, Zone...',
-                    prefixIcon: const Icon(Icons.search),
-                    border: InputBorder.none,
+  Column searchInformation(ParkingControllerImp controller) {
+    return Column(
+      children: [
+        if (isLoading) ...[
+          const Padding(
+            padding: EdgeInsets.all(5),
+            child: LoadingWidget(),
+          ),
+        ] else if (searchInfo != null &&
+            (searchController.text.trim().isNotEmpty)) ...[
+          if (searchInfo!.isEmpty) ...[
+            const Center(
+                child: Text(
+              'no data available',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+            ))
+          ] else ...[
+            searchInfoList(controller),
+          ],
+        ] else ...[
+          const SizedBox(height: 20),
+          const Center(
+            child: Text(
+              'Recent Searches',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          controller.recentSearchParking.isEmpty //
+              ? const Text('no search found')
+              : ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxHeight: 300,
                   ),
-                ),
-                if (isLoading) ...[
-                  const SizedBox(height: 50),
-                  const Center(child: CircularProgressIndicator()),
-                ] else if (searchInfo != null &&
-                    (searchController.text.trim().isNotEmpty)) ...[
-                  if (searchInfo!.isEmpty) ...[
-                    const SizedBox(height: 50),
-                    const Center(
-                        child: Text(
-                      'no data available',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                    ))
-                  ] else ...[
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: searchInfo!.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: Container(
-                                height: 45,
-                                width: 45,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(7),
-                                ),
-                                child: const Icon(
-                                  Icons.location_on_outlined,
-                                  size: 30,
-                                  weight: 2,
-                                )),
-                            title: Text('${searchInfo?[index].address?.name}'),
-                            subtitle: Text(
-                              '${searchInfo?[index].address?.country ?? ''} ${searchInfo?[index].address?.city ?? ''}',
-                              style: TextStyle(
-                                  color: Colors.grey.shade600, fontSize: 13),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ] else ...[
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Recent Searches',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  ListView.builder(
-                    itemCount: 1,
+                  child: ListView.builder(
+                    itemCount: controller.recentSearchParking.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) => ListTile(
                       leading: const Icon(Icons.replay_circle_filled_outlined),
-                      title: const Text('دمشق ,جامع الايمان'),
+                      title: Text(controller.recentSearchParking[index]),
+                      trailing: IconButton(
+                          onPressed: () {
+                            controller.deleteSearchParking(index);
+                          },
+                          icon: const Icon(Icons.highlight_remove_rounded)),
                       onTap: () async {
-                        searchController.text = 'ds';
+                        searchController.text =
+                            controller.recentSearchParking[index];
                         setState(() {
                           isLoading = true;
                         });
-                        searchInfo =
-                            await addressSuggestion('ds', limitInformation: 20);
+                        searchInfo = await addressSuggestion(
+                            controller.recentSearchParking[index],
+                            limitInformation: 20);
                         setState(() {
                           isLoading = false;
                         });
                       },
                     ),
                   ),
-                ],
-              ],
+                ),
+        ],
+      ],
+    );
+  }
+
+  ConstrainedBox searchInfoList(ParkingControllerImp controller) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 300),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: searchInfo!.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            onTap: () async {
+              if (searchInfo == null || searchInfo![index].point == null) {
+                await Get.defaultDialog(
+                    title: "error", middleText: "can't select this place");
+                return;
+              }
+              setState(() {
+                isGLoading = true;
+              });
+              final parkings = await controller
+                  .searchByCoordinates(searchInfo![index].point!);
+              setState(() {
+                isGLoading = false;
+              });
+              if (parkings == null) {
+                await Get.defaultDialog(
+                    title: "alert", middleText: "no parking for this place");
+              } else {
+                if (checkIn.compareTo(checkOut) < 1) {
+                  await Get.defaultDialog(
+                      title: "alert", middleText: "select valid time");
+                  return;
+                }
+                navigator?.push(MaterialPageRoute(
+                  builder: (context) {
+                    return MapScreen(
+                      parkings: parkings,
+                    );
+                  },
+                ));
+              }
+            },
+            leading: Container(
+              height: 45,
+              width: 45,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(7),
+              ),
+              child: const Icon(
+                Icons.location_on_outlined,
+                size: 30,
+                weight: 2,
+              ),
             ),
-          )),
+            title: Text('${searchInfo?[index].address?.name}'),
+            subtitle: Text(
+              '${searchInfo?[index].address?.country ?? ''} ${searchInfo?[index].address?.city ?? ''}',
+              style: TextStyle(
+                color: Colors.grey.shade600,
+                fontSize: 13,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  FilledButton checkOutButton() {
+    return FilledButton(
+      onPressed: () {
+        pageController.animateToPage(1,
+            curve: Curves.bounceInOut,
+            duration: const Duration(milliseconds: 300));
+        setState(() {});
+      },
+      style: FilledButton.styleFrom(
+        backgroundColor: indexCheck == 1 ? Colors.red[600] : Colors.transparent,
+        foregroundColor: indexCheck == 1 ? null : Colors.black,
+        side: indexCheck == 0 ? BorderSide() : null,
+      ),
+      child: const Text('CheckOut'),
+    );
+  }
+
+  FilledButton checkInButton() {
+    return FilledButton(
+      onPressed: () {
+        pageController.animateToPage(0,
+            curve: Curves.bounceInOut,
+            duration: const Duration(milliseconds: 300));
+        setState(() {});
+      },
+      style: FilledButton.styleFrom(
+          backgroundColor:
+              indexCheck == 0 ? Colors.red[600] : Colors.transparent,
+          foregroundColor: indexCheck == 0 ? null : Colors.black,
+          side: indexCheck == 1 ? BorderSide() : null),
+      child: const Text('CheckIn'),
+    );
+  }
+
+  TextField searchField(ParkingControllerImp controller) {
+    return TextField(
+      controller: searchController,
+      onEditingComplete: () async {
+        node.unfocus();
+        if (searchController.text.trim().length < 2) {
+          return;
+        }
+        setState(() {
+          isLoading = true;
+        });
+        controller.addSearchParking(searchController.text);
+        searchInfo = await addressSuggestion(searchController.text,
+            limitInformation: 25);
+        setState(() {
+          isLoading = false;
+        });
+      },
+      focusNode: node,
+      onTap: () async {
+        setState(() {
+          isVis = false;
+        });
+      },
+      decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(26),
+          ),
+          borderSide: BorderSide(
+            color: Colors.grey[400]!,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(24)),
+          borderSide: BorderSide(
+            color: Colors.grey[400]!,
+          ),
+        ),
+        hintText: 'Search by City, Address, Zone...',
+        prefixIcon: const Icon(Icons.search),
+        border: InputBorder.none,
+      ),
+    );
+  }
+}
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CircularProgressIndicator());
+  }
+}
+
+class TimeFromWidget extends StatelessWidget {
+  const TimeFromWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<ParkingControllerImp>(
+      builder: (controller) {
+        return TextButton(
+          onPressed: () {
+            DatePickerBdaya.showTimePicker(
+              context,
+              showTitleActions: true,
+              showSecondsColumn: false,
+              onConfirm: (date) {
+                final res = DateFormat.Hm().format(date);
+                print('confirm $res');
+              },
+              currentTime: DateTime.now(),
+              locale: LocaleType.ar,
+            );
+          },
+          child: const Text(
+            'show date time picker (Chinese)',
+            style: TextStyle(color: Colors.blue),
+          ),
+        );
+      },
     );
   }
 }

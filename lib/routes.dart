@@ -35,4 +35,6 @@ List<GetPage<dynamic>>? routes = [
   GetPage(
       name: AppRoute.verifyCodeSignUp, page: () => const VerifyCodeSignUp()),
   GetPage(name: AppRoute.onboarding, page: () => const OnBoarding()),
+  GetPage(name: AppRoute.parking, page: () => const ParkingPage()),
+  GetPage(name: AppRoute.map, page: () => const MapScreen()),
 ];
