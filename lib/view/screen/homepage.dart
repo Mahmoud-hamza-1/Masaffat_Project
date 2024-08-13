@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:ecommerce_application/view/screen/map/parking_page.dart';
+import 'package:ecommerce_application/view/screen/placingOrder.dart';
 import 'package:ecommerce_application/view/widget/auth/custombuttonAuth.dart';
 import 'package:ecommerce_application/view/widget/home/customhomeWidget.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:get/get.dart';
 
 import 'listSearch.dart';
 import 'map/map_screen.dart';
+import 'profile.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -184,7 +186,7 @@ class _HomePageState extends State<HomePage> {
           icons: [
             Icons.home,
             Icons.person,
-            Icons.message,
+            Icons.monetization_on,
             Icons.settings, // Adding an additional icon to make the count even
           ],
           safeAreaValues:
@@ -208,9 +210,10 @@ class _HomePageState extends State<HomePage> {
                 break;
               case 1:
                 // Navigate to profile screen
+                Get.to(ProfileScreen());
                 break;
               case 2:
-                // Navigate to orders screen
+                Get.to(Placingorder());
                 break;
               case 3:
                 // Navigate to messages screen
