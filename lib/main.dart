@@ -6,22 +6,15 @@ import 'package:get/get.dart';
 import 'core/localization/translation.dart';
 import 'routes.dart';
 import 'test.dart';
+import 'view/screen/OurParkingList.dart';
 import 'view/screen/language.dart';
 import 'view/screen/listSearch.dart';
-
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initialServices();
   runApp(const MyApp());
 }
-
-
-
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -30,23 +23,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LocaleController controller = Get.put(LocaleController());
-    return
-    
-     
-    
-    
-     GetMaterialApp(
+    return GetMaterialApp(
       locale: controller.language,
       translations: MyTranslation(),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: controller.appTheme,
-      // home:  SplashScreenPage(),
+      home: OurParkingList(),
       // home: const Test(),
       //  routes: routes,
 
-      initialRoute: AppRoute.splash,
-      getPages: routes,
+      // initialRoute: AppRoute.splash,
+      // getPages: routes,
     );
   }
 }
