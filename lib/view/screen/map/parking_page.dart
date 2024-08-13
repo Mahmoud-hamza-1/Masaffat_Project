@@ -330,7 +330,11 @@ class _ParkingPageState extends State<ParkingPage> {
                   iconColor: Colors.red[600],
                   padding: const EdgeInsets.all(16),
                 ),
-                icon: const Icon(Icons.my_location),
+                
+                icon:IconButton(onPressed: (){
+                  
+                }, icon: Icon(Icons.my_location)),
+                //const Icon(Icons.my_location),
                 label: const Text(
                   'Search Nearby Parking',
                   style: TextStyle(color: Colors.black54, fontSize: 17),

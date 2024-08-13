@@ -1,9 +1,15 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:ecommerce_application/view/screen/profile.dart';
+import 'package:ecommerce_application/view/screen/qrGenerater.dart';
+import 'package:ecommerce_application/view/screen/qrReader.dart';
 import 'package:ecommerce_application/view/widget/auth/custombuttonAuth.dart';
 import 'package:ecommerce_application/view/widget/home/customhomeWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
+
+import 'map/parking_page.dart';
+import 'placingOrder.dart';
 
 class HomePage extends StatelessWidget {
   final List<String> imgList = [
@@ -24,8 +30,20 @@ class HomePage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(QRScanner());
+            },
             icon: Icon(Icons.qr_code_scanner_rounded),
+          ),
+          IconButton(onPressed: (){
+            Get.to(Placingorder());
+          },
+           icon: Icon(Icons.monetization_on_rounded)),
+           IconButton(
+            onPressed: () {
+              Get.to(ProfileScreen());
+            },
+            icon: Icon(Icons.person),
           )
         ],
       ),
@@ -73,7 +91,9 @@ class HomePage extends StatelessWidget {
                   Customhomewidget(
                     label: "Parking",
                     path: 'assets/icons/parking.png',
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(ParkingPage());
+                    },
                   ),
                   Customhomewidget(
                     label: "Insurance",
@@ -148,7 +168,7 @@ class HomePage extends StatelessWidget {
             // Map Section
             Container(
               height: 300,
-              color: Colors.grey[300],
+              color: const Color.fromARGB(255, 210, 72, 72),
               child: Container(
                 child: Image.asset('assets/images/map.png'),
               ),
