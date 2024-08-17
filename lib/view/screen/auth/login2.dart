@@ -4,15 +4,15 @@ import 'package:ecommerce_application/view/widget/auth/customtextform.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/function/validinput.dart';
-import 'homepage.dart';
+import '../../../core/function/validinput.dart';
+import '../homepage.dart';
 import 'signup2.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Login2ControllerImp controller = Get.put(Login2ControllerImp());
-
+    
     //not sure about it
     // var _keyValidationForm = GlobalKey<FormState>();
 
@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         width: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
               child: Column(
@@ -147,7 +147,7 @@ class LoginPage extends StatelessWidget {
                             height: 60,
                             onPressed: () {
                               controller.login();
-                              Get.to(HomePage());
+                              //Get.to(HomePage());
                             },
                             color: Colors.greenAccent,
                             elevation: 0,

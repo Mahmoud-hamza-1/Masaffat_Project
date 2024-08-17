@@ -5,6 +5,8 @@ import 'package:ecommerce_application/data/datasource/remote/auth/login_data.dar
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import 'login2Controller.dart';
+
 abstract class ListOurParking_controller extends GetxController {
   getAllparking();
 }
@@ -24,7 +26,7 @@ class OurParkingControllerImp extends ListOurParking_controller {
         Uri.parse('http://10.0.2.2:8000/api/get/favorite/product'),
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer ${LoginControllerImp.token}'
+          'Authorization': 'Bearer ${Login2ControllerImp.token}'
         });
     print('2');
     if (response.statusCode == 200) {

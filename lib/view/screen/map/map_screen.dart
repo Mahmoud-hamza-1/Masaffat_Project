@@ -62,10 +62,10 @@ class _MapScreenState extends State<MapScreen> {
                   latitude: widget.parkings![0].latitude,
                   longitude: widget.parkings![0].latitude,
                 );
-                await controller.moveTo(
-                  point,
-                  animate: true,
-                );
+                // await controller.moveTo(
+                //   point,
+                //   animate: true,
+                // );
                 await pageController.animateToPage(
                   0,
                   duration: const Duration(milliseconds: 500),
@@ -166,12 +166,12 @@ class _MapScreenState extends State<MapScreen> {
               itemCount: widget.parkings?.length,
               controller: pageController,
               onPageChanged: (value) async {
-                await controller.moveTo(
-                    GeoPoint(
-                      latitude: widget.parkings![value].latitude,
-                      longitude: widget.parkings![value].longitude,
-                    ),
-                    animate: true);
+                // await controller.moveTo(
+                //     GeoPoint(
+                //       latitude: widget.parkings![value].latitude,
+                //       longitude: widget.parkings![value].longitude,
+                //     ),
+                //     animate: true);
                 controller.clearAllRoads();
                 roadInfo = await controller.drawRoad(
                   myLocation,
@@ -226,7 +226,7 @@ class MapWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return OSMFlutter(
       onMapIsReady: (p0) async {
-        await controller.moveTo(points[0], animate: true);
+        // await controller.moveTo(points[0], animate: true);
         await pageController.animateToPage(
           0,
           duration: const Duration(milliseconds: 500),
