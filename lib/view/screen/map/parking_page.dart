@@ -292,6 +292,9 @@ class _ParkingPageState extends State<ParkingPage> {
         itemBuilder: (context, index) {
           return ListTile(
             onTap: () async {
+              setState(() {
+                indexCheck = 0;
+              });
               FocusManager.instance.primaryFocus?.unfocus();
               if (searchInfo == null || searchInfo![index].point == null) {
                 await Get.defaultDialog(
@@ -491,6 +494,10 @@ class _ParkingPageState extends State<ParkingPage> {
         controller.addSearchParking(searchController.text);
         searchInfo = await addressSuggestion(searchController.text,
             limitInformation: 25);
+        for (var element in searchInfo!) {
+          print(element.point);
+          print(element.address);
+        }
         setState(() {
           isLoading = false;
         });

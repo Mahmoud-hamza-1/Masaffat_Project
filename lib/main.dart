@@ -29,12 +29,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: controller.appTheme,
-      home: OurParkingList(),
+      // home: OurParkingList(),
       // home: const Test(),
       //  routes: routes,
 
-      // initialRoute: AppRoute.splash,
-      // getPages: routes,
+      initialRoute: AppRoute.splash,
+      getPages: routes,
     );
   }
 }

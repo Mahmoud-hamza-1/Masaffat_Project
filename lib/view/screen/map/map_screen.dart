@@ -57,7 +57,7 @@ class _MapScreenState extends State<MapScreen> {
         children: [
           mapWidget(),
           ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 100, minHeight: 100),
+            constraints: const BoxConstraints(maxHeight: 125, minHeight: 100),
             child: PageView.builder(
               itemCount: widget.parkings?.length,
               controller: pageController,
@@ -89,9 +89,7 @@ class _MapScreenState extends State<MapScreen> {
                       borderRadius: BorderRadius.circular(10)),
                   width: MediaQuery.sizeOf(context).width,
                   child: ListTile(
-                    onTap: () {
-                      
-                    },
+                    onTap: () {},
                     title: Text('${widget.parkings?[index].name}'),
                     subtitle: Text(
                         '${widget.parkings?[index].numberSlots} parking lots'),
@@ -110,110 +108,110 @@ class _MapScreenState extends State<MapScreen> {
 
   Expanded mapWidget() {
     return Expanded(
-          child: OSMFlutter(
-            onMapIsReady: (p0) async {
-              final point = GeoPoint(
-                latitude: widget.parkings![0].latitude,
-                longitude: widget.parkings![0].latitude,
-              );
-              await controller.moveTo(
-                point,
-                animate: true,
-              );
-              await pageController.animateToPage(
-                0,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.ease,
-              );
-              // controller.clearAllRoads();
-              // roadInfo = await controller.drawRoad(
-              //   await controller.myLocation(),
-              //   point,
-              //   roadOption: const RoadOption(
-              //     roadColor: Colors.red,
-              //   ),
-              // );
-              // setState(() {});
-            },
-            // mapIsLoading: const Center(child: CircularProgressIndicator.adaptive()),
-            onGeoPointClicked: (p0) async {
-              final points = widget.parkings!
-                  .map((e) =>
-                      GeoPoint(latitude: e.latitude, longitude: e.longitude))
-                  .toList();
-              final index = points.indexOf(p0);
-              pageController.animateToPage(index,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeInOut);
-              controller.clearAllRoads();
-              roadInfo = await controller.drawRoad(
-                await controller.myLocation(),
-                points[index],
-                roadOption: const RoadOption(
-                  roadColor: Colors.red,
-                ),
-              );
-              setState(() {});
-            },
-            controller: controller,
-            osmOption: OSMOption(
-              showZoomController: true,
-              userTrackingOption: const UserTrackingOption(
-                enableTracking: true,
-                unFollowUser: true,
+      child: OSMFlutter(
+        onMapIsReady: (p0) async {
+          final point = GeoPoint(
+            latitude: widget.parkings![0].latitude,
+            longitude: widget.parkings![0].latitude,
+          );
+          await controller.moveTo(
+            point,
+            animate: true,
+          );
+          await pageController.animateToPage(
+            0,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+          );
+          controller.clearAllRoads();
+          roadInfo = await controller.drawRoad(
+            await controller.myLocation(),
+            point,
+            roadOption: const RoadOption(
+              roadColor: Colors.red,
+            ),
+          );
+          setState(() {});
+        },
+        // mapIsLoading: const Center(child: CircularProgressIndicator.adaptive()),
+        onGeoPointClicked: (p0) async {
+          final points = widget.parkings!
+              .map(
+                  (e) => GeoPoint(latitude: e.latitude, longitude: e.longitude))
+              .toList();
+          final index = points.indexOf(p0);
+          pageController.animateToPage(index,
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOut);
+          controller.clearAllRoads();
+          roadInfo = await controller.drawRoad(
+            await controller.myLocation(),
+            points[index],
+            roadOption: const RoadOption(
+              roadColor: Colors.red,
+            ),
+          );
+          setState(() {});
+        },
+        controller: controller,
+        osmOption: OSMOption(
+          showZoomController: true,
+          userTrackingOption: const UserTrackingOption(
+            enableTracking: true,
+            unFollowUser: true,
+          ),
+          zoomOption: const ZoomOption(
+            initZoom: 15,
+            minZoomLevel: 2,
+            maxZoomLevel: 19,
+            stepZoom: 1.0,
+          ),
+          userLocationMarker: UserLocationMaker(
+            personMarker: const MarkerIcon(
+              icon: Icon(
+                Icons.location_history_rounded,
+                color: Colors.red,
+                size: 48,
               ),
-              zoomOption: const ZoomOption(
-                initZoom: 15,
-                minZoomLevel: 2,
-                maxZoomLevel: 19,
-                stepZoom: 1.0,
+            ),
+            directionArrowMarker: const MarkerIcon(
+              icon: Icon(
+                Icons.double_arrow,
+                size: 48,
               ),
-              userLocationMarker: UserLocationMaker(
-                personMarker: const MarkerIcon(
-                  icon: Icon(
-                    Icons.location_history_rounded,
-                    color: Colors.red,
-                    size: 48,
-                  ),
-                ),
-                directionArrowMarker: const MarkerIcon(
-                  icon: Icon(
-                    Icons.double_arrow,
-                    size: 48,
-                  ),
-                ),
-              ),
-              staticPoints: [
-                for (int i = 0; i < widget.parkings!.length; i++)
-                  StaticPositionGeoPoint(
-                    "id $i",
-                    MarkerIcon(
-                      iconWidget: InkWell(
-                        onTap: () async {
-                          await pageController.animateToPage(
-                            i,
-                            duration: const Duration(milliseconds: 400),
-                            curve: Curves.easeInOut,
-                          );
-                        },
-                        child: const Icon(
-                          Icons.location_on,
-                        ),
-                      ),
-                    ),
-                    widget.parkings!
-                        .map(
-                          (e) => GeoPoint(
-                            latitude: e.latitude,
-                            longitude: e.longitude,
-                          ),
-                        )
-                        .toList(),
-                  )
-              ],
             ),
           ),
-        );
+          staticPoints: [
+            for (int i = 0; i < widget.parkings!.length; i++)
+              StaticPositionGeoPoint(
+                "id $i",
+                MarkerIcon(
+                  iconWidget: InkWell(
+                    onTap: () async {
+                      await pageController.animateToPage(
+                        i,
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    child: const Icon(
+                      Icons.location_on,
+                    ),
+                  ),
+                ),
+                widget.parkings!
+                    .map(
+                      (e) => GeoPoint(
+                        latitude: e.latitude,
+                        longitude: e.longitude,
+                      ),
+                    )
+                    .toList(),
+              )
+          ],
+        ),
+      ),
+    );
   }
 }
 

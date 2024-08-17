@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import '../../../../core/function/checkinternet.dart';
 import 'package:http/http.dart' as http;
 
+const baseUrl = 'http://192.168.14.139:8000/api';
+
 class ParkingData {
   const ParkingData();
 
@@ -16,7 +18,7 @@ class ParkingData {
     try {
       if (await checkInternet()) {
         var response = await http.post(
-          Uri.parse("http://192.168.1.106:8000/api/searchParkingsWithinRadius"),
+          Uri.parse("$baseUrl/searchParkingsWithinRadius"),
           headers: <String, String>{
             'Accept': 'application/json',
           },
