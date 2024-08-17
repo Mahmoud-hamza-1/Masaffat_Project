@@ -6,8 +6,7 @@ import 'package:flutter_datetime_picker_bdaya/flutter_datetime_picker_bdaya.dart
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
-import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
+import 'package:intl/intl.dart' as intl;
 
 class ParkingPage extends StatefulWidget {
   const ParkingPage({super.key});
@@ -47,47 +46,47 @@ class _ParkingPageState extends State<ParkingPage> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        checkInButton(),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        checkOutButton(),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 250,
-                      child: PageView(
-                        controller: pageController,
-                        onPageChanged: (index) {
-                          setState(() {
-                            indexCheck = index;
-                          });
-                        },
-                        children: [
-                          CupertinoTimerPicker(
-                            mode: CupertinoTimerPickerMode.hm,
-                            initialTimerDuration: checkIn,
-                            onTimerDurationChanged: (duration) {
-                              setState(() {
-                                checkIn = duration;
-                              });
-                            },
-                          ),
-                          CupertinoTimerPicker(
-                            mode: CupertinoTimerPickerMode.hm,
-                            initialTimerDuration: checkOut,
-                            onTimerDurationChanged: (duration) {
-                              setState(() {
-                                checkOut = duration;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     checkInButton(),
+                    //     const SizedBox(
+                    //       width: 15,
+                    //     ),
+                    //     checkOutButton(),
+                    //   ],
+                    // ),
+                    // SizedBox(
+                    //   height: 250,
+                    //   child: PageView(
+                    //     controller: pageController,
+                    //     onPageChanged: (index) {
+                    //       setState(() {
+                    //         indexCheck = index;
+                    //       });
+                    //     },
+                    //     children: [
+                    //       CupertinoTimerPicker(
+                    //         mode: CupertinoTimerPickerMode.hm,
+                    //         initialTimerDuration: checkIn,
+                    //         onTimerDurationChanged: (duration) {
+                    //           setState(() {
+                    //             checkIn = duration;
+                    //           });
+                    //         },
+                    //       ),
+                    //       CupertinoTimerPicker(
+                    //         mode: CupertinoTimerPickerMode.hm,
+                    //         initialTimerDuration: checkOut,
+                    //         onTimerDurationChanged: (duration) {
+                    //           setState(() {
+                    //             checkOut = duration;
+                    //           });
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     TapRegion(
                       onTapOutside: (event) {
                         setState(() {
@@ -293,11 +292,109 @@ class _ParkingPageState extends State<ParkingPage> {
         itemBuilder: (context, index) {
           return ListTile(
             onTap: () async {
+              FocusManager.instance.primaryFocus?.unfocus();
               if (searchInfo == null || searchInfo![index].point == null) {
                 await Get.defaultDialog(
                     title: "error", middleText: "can't select this place");
                 return;
               }
+              await showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return StatefulBuilder(builder: (context, setState) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 320,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade300,
+                                      spreadRadius: 1,
+                                      blurStyle: BlurStyle.inner,
+                                    ),
+                                  ]),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      checkInButton(),
+                                      const SizedBox(
+                                        width: 15,
+                                      ),
+                                      checkOutButton(),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 200,
+                                    child: PageView(
+                                      controller: pageController,
+                                      onPageChanged: (index) {
+                                        setState(() {
+                                          indexCheck = index;
+                                        });
+                                      },
+                                      children: [
+                                        Directionality(
+                                          textDirection: TextDirection.ltr,
+                                          child: CupertinoTimerPicker(
+                                            mode: CupertinoTimerPickerMode.hm,
+                                            initialTimerDuration: checkIn,
+                                            onTimerDurationChanged: (duration) {
+                                              setState(() {
+                                                checkIn = duration;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Directionality(
+                                          textDirection: TextDirection.ltr,
+                                          child: CupertinoTimerPicker(
+                                            mode: CupertinoTimerPickerMode.hm,
+                                            initialTimerDuration: checkOut,
+                                            onTimerDurationChanged: (duration) {
+                                              setState(() {
+                                                checkOut = duration;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            FilledButton(
+                                style: FilledButton.styleFrom(
+                                    backgroundColor: Colors.black),
+                                onPressed: () async {
+                                  if (checkIn.compareTo(checkOut) >= 0) {
+                                    await Get.defaultDialog(
+                                        title: "alert",
+                                        middleText: "select valid time");
+                                    return;
+                                  }
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('التالي'))
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+                },
+              );
+              // return;
               setState(() {
                 isGLoading = true;
               });
@@ -310,11 +407,6 @@ class _ParkingPageState extends State<ParkingPage> {
                 await Get.defaultDialog(
                     title: "alert", middleText: "no parking for this place");
               } else {
-                if (checkIn.compareTo(checkOut) < 1) {
-                  await Get.defaultDialog(
-                      title: "alert", middleText: "select valid time");
-                  return;
-                }
                 navigator?.push(MaterialPageRoute(
                   builder: (context) {
                     return MapScreen(
@@ -362,7 +454,7 @@ class _ParkingPageState extends State<ParkingPage> {
       style: FilledButton.styleFrom(
         backgroundColor: indexCheck == 1 ? Colors.red[600] : Colors.transparent,
         foregroundColor: indexCheck == 1 ? null : Colors.black,
-        side: indexCheck == 0 ? BorderSide() : null,
+        side: indexCheck == 0 ? const BorderSide() : null,
       ),
       child: const Text('CheckOut'),
     );
@@ -380,7 +472,7 @@ class _ParkingPageState extends State<ParkingPage> {
           backgroundColor:
               indexCheck == 0 ? Colors.red[600] : Colors.transparent,
           foregroundColor: indexCheck == 0 ? null : Colors.black,
-          side: indexCheck == 1 ? BorderSide() : null),
+          side: indexCheck == 1 ? const BorderSide() : null),
       child: const Text('CheckIn'),
     );
   }
@@ -455,7 +547,7 @@ class TimeFromWidget extends StatelessWidget {
               showTitleActions: true,
               showSecondsColumn: false,
               onConfirm: (date) {
-                final res = DateFormat.Hm().format(date);
+                final res = intl.DateFormat.Hm().format(date);
                 print('confirm $res');
               },
               currentTime: DateTime.now(),

@@ -407,26 +407,26 @@ packages:
     dependency: transitive
     description:
       name: flutter_osm_interface
-      sha256: "9d1c747635ce8a58ceb623825f0fe4d469272645458ce839d466f9d03dff2729"
+      sha256: "9243c552607bc4a5db318d9e5c8b7aad625a2ccfae314b85420eb081bcfcd65f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.0"
+    version: "1.1.0"
   flutter_osm_plugin:
     dependency: "direct main"
     description:
       name: flutter_osm_plugin
-      sha256: f6680d5f0572aaf7329055a5e1be3a2ae33eab0e9f82c65bd3ac665332d20bb2
+      sha256: a2120201b68af76706b811404356038ba85ea200966a5d8dfb1803fda4c0e20b
       url: "https://pub.dev"
     source: hosted
-    version: "0.70.4"
+    version: "1.2.0"
   flutter_osm_web:
     dependency: transitive
     description:
       name: flutter_osm_web
-      sha256: e1f2c581dcdb89b9d835b42a29bbc05cdbc2d681741d1213a2d8b9eabdc736ad
+      sha256: "4abc5ce6954ea9d34a3ec70da3cdc93f9846c271484ffc7003f2fd792783639b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.2"
+    version: "1.1.0"
   flutter_otp_text_field:
     dependency: "direct main"
     description:
@@ -777,10 +777,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.7"
+    version: "0.7.1"
   json_annotation:
     dependency: transitive
     description:

@@ -1,20 +1,18 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get.dart';
+
 import 'package:ecommerce_application/view/screen/map/parking_page.dart';
 import 'package:ecommerce_application/view/screen/placingOrder.dart';
 import 'package:ecommerce_application/view/widget/auth/custombuttonAuth.dart';
 import 'package:ecommerce_application/view/widget/home/customhomeWidget.dart';
-import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:get/get.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
 import 'listSearch.dart';
-import 'map/map_screen.dart';
-
-import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:get/get.dart';
-
 import 'listSearch.dart';
 import 'map/map_screen.dart';
 import 'myCars.dart';
