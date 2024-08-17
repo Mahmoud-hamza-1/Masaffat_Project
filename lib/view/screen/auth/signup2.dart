@@ -1,11 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:ecommerce_application/controller/signup2Controller.dart';
 import 'package:ecommerce_application/core/function/validinput.dart';
-import 'package:ecommerce_application/view/screen/login2.dart';
+import 'package:ecommerce_application/view/screen/auth/login2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../widget/auth/customtextform.dart';
+import '../../widget/auth/customtextform.dart';
 
 class SignupPage extends StatelessWidget {
   @override

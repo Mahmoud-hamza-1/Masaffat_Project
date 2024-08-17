@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:ecommerce_application/view/screen/Updateprofile.dart';
+import 'package:ecommerce_application/view/screen/homepage.dart';
 import 'package:ecommerce_application/view/screen/profile.dart';
 import 'package:ecommerce_application/view/widget/home/customProfileMenuWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:swipe_to/swipe_to.dart';
+
+import 'package:http/http.dart ' as http;
 //import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class Placingorder extends StatelessWidget {
@@ -245,8 +250,126 @@ subscribe to ?
                   // onLeftSwipe: (details) {
                   //   print("ggggg");
                   // },
-                  onRightSwipe: (details) {
-                    Get.to(ProfileScreen());
+                  onRightSwipe: (details) async {
+
+
+
+
+
+                     
+  
+    print("start from here");
+    String url = "http://10.0.2.2:8000/api/addBooking/2/25";
+
+    var response = await http.post(Uri.parse(url), headers: <String, String>{
+      'Accept': 'application/json',
+    },
+     body: {
+     'from': '7:22',
+     'to': '9:33',
+     'user_id': '1'
+    });
+
+
+    print("hello from this line");
+    print(response.body);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print("popopop");
+      print(response.body);
+      print(response);
+      print('ERROR 5');
+      Map responseBody = jsonDecode(response.body);
+      print('ERROR 6');
+      print(responseBody);
+      Get.to(HomePage());
+      // return Right(responseBody);
+    } else {
+      Get.defaultDialog(
+        title: 'serverFailure',
+        middleText: 'incorrect Password or Email',
+      );
+      Get.to(HomePage());
+      //return const Left(StatusRequest.serverFailure);
+    }
+
+
+
+
+                
+
+
+            
+
+
+
+
+
+
+
+
+
+//http.StreamedResponse response = await request.send();
+
+
+
+
+
+
+
+
+
+// if (response.statusCode == 200|| response.statusCode == 201) {
+//   print("allll doneeee");
+// }
+// else {
+//   print("faileeeed");
+//   print(response.reasonPhrase);
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  //  Get.to(ProfileScreen());
                   },
                   child: Align(
                     alignment: Alignment.centerLeft,

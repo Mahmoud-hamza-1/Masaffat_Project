@@ -231,7 +231,7 @@ class MapWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return OSMFlutter(
       onMapIsReady: (p0) async {
-        await controller.moveTo(points[0], animate: true);
+        // await controller.moveTo(points[0], animate: true);
         await pageController.animateToPage(
           0,
           duration: const Duration(milliseconds: 500),

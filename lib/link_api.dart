@@ -5,7 +5,7 @@ class AppLink {
 //========================= Auth ==================================//
   static const String signupApi = "http://10.0.2.2:8000/api/register";
   // static const String loginApi = "http://10.0.2.2:8000/api/login";
-    static const String loginApi = "http://10.0.2.2:8000/api/login";
+    static const String loginApi = "http://10.0.0.2:8000/api/login";
   static const String verifycodeSignupApi = "";
 
 //========================= forget password ==================================//
