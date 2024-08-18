@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce_application/data/model/parking_model.dart';
+import 'package:ecommerce_application/link_api.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +19,7 @@ class ParkingData {
     try {
       if (await checkInternet()) {
         var response = await http.post(
-          Uri.parse("$baseUrl/searchParkingsWithinRadius"),
+          Uri.parse(AppLink.searchParkingRadius),
           headers: <String, String>{
             'Accept': 'application/json',
           },

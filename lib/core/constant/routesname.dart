@@ -15,4 +15,6 @@ class AppRoute {
   //map
   static const map = '/map';
   static const parking = '/parking';
+
+  static const home = '/home';
 }

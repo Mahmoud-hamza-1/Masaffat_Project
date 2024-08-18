@@ -1,4 +1,5 @@
 import 'package:ecommerce_application/controller/map/parking_controller.dart';
+import 'package:ecommerce_application/data/model/parking_model.dart';
 import 'package:ecommerce_application/view/screen/map/map_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,8 @@ class _ParkingPageState extends State<ParkingPage> {
   bool isGLoading = false;
   final pageController = PageController();
   var indexCheck = 0;
-  Duration checkIn = Duration.zero;
-  Duration checkOut = Duration.zero;
+  DateTime checkIn = DateTime.now();
+  DateTime checkOut = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -170,13 +171,98 @@ class _ParkingPageState extends State<ParkingPage> {
                         // When we reach here, permissions are granted and we can
                         // continue accessing the position of the device.
                         setState(() {
+                          indexCheck = 0;
+                        });
+                        await showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return StatefulBuilder(
+                                builder: (context, setState) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  height: 320,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      DecoratedBox(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey.shade300,
+                                                spreadRadius: 1,
+                                                blurStyle: BlurStyle.inner,
+                                              ),
+                                            ]),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                checkInButton(),
+                                                const SizedBox(
+                                                  width: 15,
+                                                ),
+                                                checkOutButton(),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 200,
+                                              child: PageView(
+                                                controller: pageController,
+                                                onPageChanged: (index) {
+                                                  setState(() {
+                                                    indexCheck = index;
+                                                  });
+                                                },
+                                                children: [
+                                                  datePicker(true),
+                                                  datePicker(false),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      FilledButton(
+                                          style: FilledButton.styleFrom(
+                                              backgroundColor: Colors.black),
+                                          onPressed: () async {
+                                            if (checkIn.compareTo(checkOut) >=
+                                                0) {
+                                              await Get.defaultDialog(
+                                                  title: "alert",
+                                                  middleText:
+                                                      "select valid time");
+                                              return;
+                                            }
+                                            controller.updateCheckIn(
+                                                checkIn, checkOut);
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('التالي'))
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                          },
+                        );
+                        setState(() {
                           isGLoading = true;
                         });
                         final loc = await Geolocator.getCurrentPosition();
-                        final parkings = await controller.searchByCoordinates(
-                            GeoPoint(
-                                latitude: loc.latitude,
-                                longitude: loc.longitude));
+                        final myLoc = GeoPoint(
+                            latitude: loc.latitude, longitude: loc.longitude);
+                        final parkings =
+                            await controller.searchByCoordinates(myLoc);
                         setState(() {
                           isGLoading = false;
                         });
@@ -189,6 +275,7 @@ class _ParkingPageState extends State<ParkingPage> {
                             builder: (context) {
                               return MapScreen(
                                 parkings: parkings,
+                                myLocation: myLoc,
                               );
                             },
                           ));
@@ -210,6 +297,20 @@ class _ParkingPageState extends State<ParkingPage> {
                 );
               }),
         ),
+      ),
+    );
+  }
+
+  Directionality datePicker(final bool isCheckIn) {
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: CupertinoDatePicker(
+        initialDateTime: isCheckIn ? checkIn : checkOut,
+        onDateTimeChanged: (date) {
+          setState(() {
+            isCheckIn ? checkIn = date : checkOut = date;
+          });
+        },
       ),
     );
   }
@@ -344,30 +445,8 @@ class _ParkingPageState extends State<ParkingPage> {
                                         });
                                       },
                                       children: [
-                                        Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: CupertinoTimerPicker(
-                                            mode: CupertinoTimerPickerMode.hm,
-                                            initialTimerDuration: checkIn,
-                                            onTimerDurationChanged: (duration) {
-                                              setState(() {
-                                                checkIn = duration;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                        Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: CupertinoTimerPicker(
-                                            mode: CupertinoTimerPickerMode.hm,
-                                            initialTimerDuration: checkOut,
-                                            onTimerDurationChanged: (duration) {
-                                              setState(() {
-                                                checkOut = duration;
-                                              });
-                                            },
-                                          ),
-                                        ),
+                                        datePicker(true),
+                                        datePicker(false),
                                       ],
                                     ),
                                   ),
@@ -387,6 +466,7 @@ class _ParkingPageState extends State<ParkingPage> {
                                         middleText: "select valid time");
                                     return;
                                   }
+                                  controller.updateCheckIn(checkIn, checkOut);
                                   Navigator.pop(context);
                                 },
                                 child: const Text('التالي'))
@@ -401,19 +481,25 @@ class _ParkingPageState extends State<ParkingPage> {
               setState(() {
                 isGLoading = true;
               });
-              final parkings = await controller
-                  .searchByCoordinates(searchInfo![index].point!);
+              final res = await Future.wait([
+                Geolocator.getCurrentPosition(),
+                controller.searchByCoordinates(searchInfo![index].point!)
+              ]);
+
               setState(() {
                 isGLoading = false;
               });
-              if (parkings == null) {
+              if (res[1] == null) {
                 await Get.defaultDialog(
                     title: "alert", middleText: "no parking for this place");
               } else {
                 navigator?.push(MaterialPageRoute(
                   builder: (context) {
                     return MapScreen(
-                      parkings: parkings,
+                      parkings: res[1] as List<ParkingModel>?,
+                      myLocation: GeoPoint(
+                          latitude: (res[0] as Position).latitude,
+                          longitude: (res[0] as Position).longitude),
                     );
                   },
                 ));
