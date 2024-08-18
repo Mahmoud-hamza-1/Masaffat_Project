@@ -144,43 +144,8 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 16),
               // Middle Banner Section
-              Container(
-                padding: const EdgeInsets.all(16.0),
-                color: Colors.grey[200],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Pay Less for Car Expenses',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Choose Service'),
-                          ),
-                          const SizedBox(width: 8),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Compare Price'),
-                          ),
-                          const SizedBox(width: 8),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Get Cashback'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
+
+              const SizedBox(height: 8),
               // Map Section
               Container(
                 height: 300,
