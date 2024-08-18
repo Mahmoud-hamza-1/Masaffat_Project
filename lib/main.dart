@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       // home: const Test(),
       //routes: routes,
 
-      initialRoute: AppRoute.splash,
+      initialRoute: AppRoute.parking,
       getPages: routes,
     );
   }

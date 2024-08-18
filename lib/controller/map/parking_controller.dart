@@ -12,6 +12,7 @@ abstract class ParkingController extends GetxController {
   void addSearchParking(String searchParking);
   void deleteSearchParking(int index);
   Future<List<ParkingModel>?> searchByCoordinates(GeoPoint point);
+  void updateCheckIn(DateTime newCheckIn, DateTime newCheckOut);
 }
 
 class ParkingControllerImp extends ParkingController {
@@ -19,6 +20,7 @@ class ParkingControllerImp extends ParkingController {
   late List<String> recentSearchParking;
   List<ParkingModel>? parkings;
   final parkingData = const ParkingData();
+  DateTime checkIn = DateTime.now(), checkOut = DateTime.now();
 
   @override
   void onInit() {
@@ -60,5 +62,12 @@ class ParkingControllerImp extends ParkingController {
   Future<List<ParkingModel>?> searchByCoordinates(GeoPoint point) async {
     final res = await parkingData.searchByCoordinates(point);
     return res.fold((l) => l, (_) => null);
+  }
+
+  @override
+  void updateCheckIn(DateTime newCheckIn, DateTime newCheckOut) {
+    checkIn = newCheckIn;
+    checkOut = newCheckOut;
+    update();
   }
 }
