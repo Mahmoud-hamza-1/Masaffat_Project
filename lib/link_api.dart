@@ -25,4 +25,5 @@ class AppLink {
       "$_baseUrl/searchParkingsWithinRadius";
 
   static const String advert = "$_baseUrl/indexAdverts";
+  static const addBooking = "$_baseUrl/addBooking";
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce_application/data/model/parking_model.dart';
 import 'package:ecommerce_application/link_api.dart';
+import 'package:ecommerce_application/main.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:get/get.dart';
 
@@ -49,6 +50,50 @@ class ParkingData {
           middleText: 'offLineFailure',
         );
         return right('no internet');
+      }
+    } catch (e) {
+      Get.defaultDialog(
+        title: 'serverException',
+        middleText: '$e',
+      );
+      return right('$e');
+    }
+  }
+
+  Future<Either<List<ParkingModel>, String>> addBooking(
+    int parkingId,
+    DateTime from,
+    DateTime to,
+  ) async {
+    try {
+      final data = sharedStorage.getString('user');
+      final user = data != null
+          ? jsonDecode(data)
+          : throw Exception('you have to login');
+      var response = await http.post(
+        Uri.parse('${AppLink.addBooking}//'),
+        headers: <String, String>{
+          'Accept': 'application/json',
+        },
+        body: {
+          "from": '${from}',
+          "to": '${to}',
+          "user_id": "${user["id"]}",
+        },
+      );
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        final responseBody =
+            jsonDecode(response.body)["parkings"] as List<dynamic>;
+        return left(responseBody.map((e) => ParkingModel.fromJson(e)).toList());
+      } else {
+        Get.defaultDialog(
+          title: 'serverFailure',
+          middleText: jsonDecode(response.body)["msg"],
+        );
+        return right('${jsonDecode(response.body)["msg"]}');
       }
     } catch (e) {
       Get.defaultDialog(

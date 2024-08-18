@@ -56,8 +56,6 @@ class SignupPage extends StatelessWidget {
                           "Create an account, It's free",
                           style:
                               TextStyle(fontSize: 15, color: Colors.grey[700]),
-                          style:
-                              TextStyle(fontSize: 15, color: Colors.grey[700]),
                         )),
                   ],
                 ),
