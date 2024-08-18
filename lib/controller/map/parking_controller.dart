@@ -13,7 +13,8 @@ abstract class ParkingController extends GetxController {
   void deleteSearchParking(int index);
   Future<List<ParkingModel>?> searchByCoordinates(GeoPoint point);
   void updateCheckIn(DateTime newCheckIn, DateTime newCheckOut);
-  void addBooking(int parkingId);
+  Future<void> addBooking(int parkingId, int slotId);
+  Future<void> findClosestAvailableTime(int parkingId);
 }
 
 class ParkingControllerImp extends ParkingController {
@@ -73,7 +74,18 @@ class ParkingControllerImp extends ParkingController {
   }
 
   @override
-  void addBooking(int parkingId) {
-    final res = parkingData.addBooking(parkingId, checkIn, checkOut);
+  Future<void> addBooking(int parkingId, int slotId) async {
+    final res =
+        await parkingData.addBooking(parkingId, slotId, checkIn, checkOut);
+  }
+
+  List<FindClosestTimeModel>? closestTime;
+  @override
+  Future<void> findClosestAvailableTime(int parkingId) async {
+    closestTime = await parkingData.findClosestAvailableTime(
+      checkIn,
+      checkOut,
+      parkingId,
+    );
   }
 }

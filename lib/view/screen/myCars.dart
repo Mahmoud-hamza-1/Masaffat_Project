@@ -1,3 +1,4 @@
+import 'package:ecommerce_application/controller/map/car_controller.dart';
 import 'package:ecommerce_application/view/screen/Updateprofile.dart';
 import 'package:ecommerce_application/view/screen/profile.dart';
 import 'package:ecommerce_application/view/widget/home/customProfileMenuWidget.dart';
@@ -34,14 +35,14 @@ class Mycars extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("My Cars"),
+          title: const Text("My Cars"),
           actions: [
             IconButton(
                 onPressed: () {
-                  Get.to(Addingcar());
+                  Get.to(() => const Addingcar());
                 },
-                icon: Icon(Icons.add)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.edit))
+                icon: const Icon(Icons.add)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.edit))
           ],
         ),
         body: SingleChildScrollView(
@@ -97,48 +98,53 @@ class Mycars extends StatelessWidget {
                       color: Colors.green),
                 ),
               ),
-              Center(
-                child:
-                    //FutureBuilder<List<MyCarsControllerImp>>(
-                    //future: controller.getMyCars(),
-                    //builder: (context, snapshot) {
-                    //if (snapshot.hasData) {
-                    //return
-                    ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 10,
-                  // snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading:
+              GetBuilder<CarControllerImp>(
+                  init: CarControllerImp(),
+                  builder: (controller) {
+                    return controller.cars == null || controller.cars!.isEmpty
+                        ? const Center(
+                            child: Text('you dont have a car'),
+                          )
+                        : Center(
+                            child:
+                                //FutureBuilder<List<MyCarsControllerImp>>(
+                                //future: controller.getMyCars(),
+                                //builder: (context, snapshot) {
+                                //if (snapshot.hasData) {
+                                //return
+                                ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: controller.cars?.length,
+                              // snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                var car = controller.cars![index];
+                                return ListTile(
+                                  leading:
 
-                          //  CircleAvatar(
-                          //   child:
-                          //   Image.asset('assets/images/Mercedes.jpg'),
-                          //   // Icon(Icons.car_rental_rounded)
-                          //   //  Image.network(
-                          //   //     snapshot.data![index].avatar.toString()),
-                          // ),
+                                      //  CircleAvatar(
+                                      //   child:
+                                      //   Image.asset('assets/images/Mercedes.jpg'),
+                                      //   // Icon(Icons.car_rental_rounded)
+                                      //   //  Image.network(
+                                      //   //     snapshot.data![index].avatar.toString()),
+                                      // ),
 
-                          ClipRRect(
-                        borderRadius: BorderRadius.circular(30.0),
-                        child: Image.asset(
-                          'assets/images/Mercedes.jpg',
-                          height: 100.0,
-                          width: 100.0,
-                        ),
-                      ),
-                      title: Text("Mercedes Benz"),
-                      // Text(snapshot.data![index].name.toString()),
-                      trailing: Text("300E"),
-                      // Text(snapshot.data![index].amount.toString()),
-                      subtitle: Text("2024"),
-
-                      //Text(snapshot.data![index].date.toString()),
-                    );
-                  },
-                ),
-              )
+                                      ClipRRect(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    child: Image.asset(
+                                      'assets/images/car.png',
+                                      height: 100.0,
+                                      width: 100.0,
+                                    ),
+                                  ),
+                                  title: Text(car.description),
+                                  // trailing: const Text("300E"),
+                                  // subtitle: const Text("2024"),
+                                );
+                              },
+                            ),
+                          );
+                  })
             ],
           ),
         ));

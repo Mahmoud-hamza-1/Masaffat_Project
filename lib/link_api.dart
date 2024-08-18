@@ -26,4 +26,8 @@ class AppLink {
 
   static const String advert = "$_baseUrl/indexAdverts";
   static const addBooking = "$_baseUrl/addBooking";
+
+  static const getVehiclesByUser = "$_baseUrl/getVehiclesByUser";
+
+  static const findClosestAvailableTime = "$_baseUrl/findClosestAvailableTime";
 }

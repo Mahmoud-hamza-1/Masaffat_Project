@@ -34,3 +34,18 @@ class ParkingModel {
         "number_slots": numberSlots,
       };
 }
+
+class FindClosestTimeModel {
+  final int slotId;
+  final DateTime from;
+  final DateTime to;
+
+  const FindClosestTimeModel(
+      {required this.slotId, required this.from, required this.to});
+
+  factory FindClosestTimeModel.fromJson(dynamic json) => FindClosestTimeModel(
+        from: DateTime.parse(json['from']),
+        to: DateTime.parse(json['to']),
+        slotId: int.parse(json['slot_id']),
+      );
+}

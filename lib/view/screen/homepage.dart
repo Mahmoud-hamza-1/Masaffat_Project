@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
                 onPressed: () {
                   //here
-                  Get.to(const Mycars());
+                  Get.to(() => const Mycars());
                 },
                 icon: const Icon(Icons.car_rental)),
             IconButton(

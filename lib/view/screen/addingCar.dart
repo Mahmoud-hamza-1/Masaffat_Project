@@ -18,22 +18,20 @@ class _AddingcarState extends State<Addingcar> {
     final TextEditingController color = TextEditingController();
     final TextEditingController category = TextEditingController();
 
-    File? image;
-    final imagepicker = ImagePicker();
+    // File? image;
+    // final imagepicker = ImagePicker();
 
-    Future uploadImage() async {
-      var pickedImage =
-          await imagepicker.pickImage(source: ImageSource.gallery);
-      if (pickedImage != null)
-      
-          image = File(pickedImage.path);
-        
-      else {}
-    }
+    // Future uploadImage() async {
+    //   var pickedImage =
+    //       await imagepicker.pickImage(source: ImageSource.gallery);
+    //   if (pickedImage != null)
+    //     image = File(pickedImage.path);
+    //   else {}
+    // }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add A New Car !"),
+        title: const Text("Add A New Car !"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -41,63 +39,61 @@ class _AddingcarState extends State<Addingcar> {
           child: Column(
             children: [
               // -- IMAGE with ICON
-              Stack(
-                children: [
-                  // width: 120,
+              // Stack(
+              //   children: [
+              //     // width: 120,
 
-                  // CircleAvatar(
+              //     // CircleAvatar(
 
-                  //   radius: 75, // Image radius
-                  //   backgroundImage: AssetImage('assets/images/Mercedes.jpg'),
-                  // ),
+              //     //   radius: 75, // Image radius
+              //     //   backgroundImage: AssetImage('assets/images/Mercedes.jpg'),
+              //     // ),
 
-                  image == null
-                  ?
-                   ClipOval(
-                      child: SizedBox.fromSize(
-                        size: Size.fromRadius(60), // Image radius
-                        child: Image.asset('assets/images/Mercedes.jpg',
-                            fit: BoxFit.cover),
-                      ),
-                    ):
-                  
-                       ClipOval(
-                          child: SizedBox.fromSize(
-                            size: Size.fromRadius(60), // Image radius
-                            child: Image.file(image!, fit: BoxFit.cover),
-                          ),
-                        ),
+              //     image == null
+              //         ? ClipOval(
+              //             child: SizedBox.fromSize(
+              //               size: const Size.fromRadius(60), // Image radius
+              //               child: Image.asset('assets/images/Mercedes.jpg',
+              //                   fit: BoxFit.cover),
+              //             ),
+              //           )
+              //         : ClipOval(
+              //             child: SizedBox.fromSize(
+              //               size: const Size.fromRadius(60), // Image radius
+              //               child: Image.file(image!, fit: BoxFit.cover),
+              //             ),
+              //           ),
 
-                  // ClipOval(
-                  //   child: SizedBox.fromSize(
-                  //     size: Size.fromRadius(60), // Image radius
-                  //     child: Image.asset('assets/images/Mercedes.jpg',
-                  //         fit: BoxFit.cover),
-                  //   ),
-                  // ),
+              //     // ClipOval(
+              //     //   child: SizedBox.fromSize(
+              //     //     size: Size.fromRadius(60), // Image radius
+              //     //     child: Image.asset('assets/images/Mercedes.jpg',
+              //     //         fit: BoxFit.cover),
+              //     //   ),
+              //     // ),
 
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () async {
-                        uploadImage();
-                        setState(() {});
-                      },
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.blue),
-                        child: Icon(Icons.edit,
-                            color: Colors.black, size: 20),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 50),
+              //     Positioned(
+              //       bottom: 0,
+              //       right: 0,
+              //       child: GestureDetector(
+              //         onTap: () async {
+              //           uploadImage();
+              //           setState(() {});
+              //         },
+              //         child: Container(
+              //           width: 35,
+              //           height: 35,
+              //           decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(100),
+              //               color: Colors.blue),
+              //           child: const Icon(Icons.edit,
+              //               color: Colors.black, size: 20),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(height: 50),
 
               // -- Form Fields
               Form(
@@ -106,37 +102,31 @@ class _AddingcarState extends State<Addingcar> {
                     TextFormField(
                       controller: plat_number,
                       decoration: InputDecoration(
-                        label: Text("plate number"),
-                        prefixIcon: Icon(Icons.format_list_numbered_rounded),
-
-
-
+                        label: const Text("plate number"),
+                        prefixIcon:
+                            const Icon(Icons.format_list_numbered_rounded),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Colors.blue,
                             )),
-
-
-
-                            
                       ),
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
                       controller: description,
                       decoration: InputDecoration(
-                        label: Text("Description"),
-                        prefixIcon: Icon(Icons.message),
+                        label: const Text("Description"),
+                        prefixIcon: const Icon(Icons.message),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Colors.blue,
                             )),
                       ),
@@ -145,14 +135,14 @@ class _AddingcarState extends State<Addingcar> {
                     TextFormField(
                       controller: color,
                       decoration: InputDecoration(
-                        label: Text("Colour"),
-                        prefixIcon: Icon(Icons.color_lens_outlined),
+                        label: const Text("Colour"),
+                        prefixIcon: const Icon(Icons.color_lens_outlined),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Colors.blue,
                             )),
                       ),
@@ -166,10 +156,10 @@ class _AddingcarState extends State<Addingcar> {
                         prefixIcon: const Icon(Icons.bus_alert_outlined),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(color: Colors.blue)),
+                            borderSide: const BorderSide(color: Colors.blue)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Colors.blue,
                             )),
                       ),
@@ -192,7 +182,7 @@ class _AddingcarState extends State<Addingcar> {
                     const SizedBox(height: 30),
 
                     // -- Created Date and Delete Button
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // const Text.rich(
