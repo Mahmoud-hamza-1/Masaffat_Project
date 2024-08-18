@@ -54,7 +54,8 @@ class SignupPage extends StatelessWidget {
                         duration: Duration(milliseconds: 1200),
                         child: Text(
                           "Create an account, It's free",
-                          style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+                          style:
+                              TextStyle(fontSize: 15, color: Colors.grey[700]),
                         )),
                   ],
                 ),
@@ -130,14 +131,16 @@ class SignupPage extends StatelessWidget {
                       onPressed: () {
                         controller.signup();
                       },
-                      color: Colors.greenAccent,
+                      color: Colors.red,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50)),
                       child: Text(
                         "Sign up",
                         style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 18),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18),
                       ),
                     ),
                   )),
@@ -149,17 +152,17 @@ class SignupPage extends StatelessWidget {
                       Text("Already have an account?"),
 
                       TextButton(
-                            onPressed: () {
-                              Get.to(LoginPage());
-                            },
-                            child: Text(
-                              "Login",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18),
-                            ),
-                          ),
+                        onPressed: () {
+                          Get.to(LoginPage());
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18),
+                        ),
+                      ),
 
                       // Text(
                       //   " Login",

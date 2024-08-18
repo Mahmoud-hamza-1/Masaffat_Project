@@ -1,12 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:ecommerce_application/controller/login2Controller.dart';
+import 'package:ecommerce_application/view/screen/auth/signup2.dart';
 import 'package:ecommerce_application/view/widget/auth/customtextform.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/function/validinput.dart';
-import '../homepage.dart';
-import 'signup2.dart';
+import '../../core/function/validinput.dart';
+import 'homepage.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         width: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
               child: Column(
@@ -147,18 +147,16 @@ class LoginPage extends StatelessWidget {
                             height: 60,
                             onPressed: () {
                               controller.login();
-                              //Get.to(HomePage());
+                              Get.to(HomePage());
                             },
-                            color: Colors.red,
+                            color: Colors.greenAccent,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50)),
                             child: Text(
                               "Login",
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18),
+                                  fontWeight: FontWeight.w600, fontSize: 18),
                             ),
                           ),
                         ),
