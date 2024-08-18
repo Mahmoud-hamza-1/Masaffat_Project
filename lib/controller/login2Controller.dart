@@ -58,7 +58,7 @@ class Login2ControllerImp extends Login2Controller {
       Map responseBody = jsonDecode(response.body);
       print('ERROR 6');
       print(responseBody);
-      Get.off(() => const HomePage());
+       Get.off(() => HomePage());
       // return Right(responseBody);
     } else {
       Get.defaultDialog(
