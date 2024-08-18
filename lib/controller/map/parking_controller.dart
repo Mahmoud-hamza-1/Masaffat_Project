@@ -13,6 +13,7 @@ abstract class ParkingController extends GetxController {
   void deleteSearchParking(int index);
   Future<List<ParkingModel>?> searchByCoordinates(GeoPoint point);
   void updateCheckIn(DateTime newCheckIn, DateTime newCheckOut);
+  void addBooking(int parkingId);
 }
 
 class ParkingControllerImp extends ParkingController {
@@ -69,5 +70,10 @@ class ParkingControllerImp extends ParkingController {
     checkIn = newCheckIn;
     checkOut = newCheckOut;
     update();
+  }
+
+  @override
+  void addBooking(int parkingId) {
+    final res = parkingData.addBooking(parkingId, checkIn, checkOut);
   }
 }

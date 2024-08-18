@@ -14,15 +14,15 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Image img = Image.asset('assets/images/mo.jpg');
-     
 
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: const Icon(cc.LineAwesomeIcons.angle_left_solid)),
+        // leading: IconButton(
+        //     onPressed: () => Get.back(),
+        //     icon: const Icon(cc.LineAwesomeIcons.angle_left_solid)),
         title: Text("User Profile"),
+        centerTitle: true,
         actions: [
           IconButton(
               onPressed: () {},
@@ -74,7 +74,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                "$Name" ,
+                "$Name",
               ),
               // style: Theme.of(context).textTheme.headline4),
               Text(
@@ -87,9 +87,7 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: ElevatedButton(
-                  onPressed: ()
-                       => Get.to(() => const UpdateProfileScreen()),
-                      
+                  onPressed: () => Get.to(() => const UpdateProfileScreen()),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.cyan,
                       side: BorderSide.none,

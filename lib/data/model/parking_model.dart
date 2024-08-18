@@ -20,8 +20,8 @@ class ParkingModel {
 
   factory ParkingModel.fromJson(dynamic json) => ParkingModel(
         id: json["id"],
-        longitude: double.parse(json["longitude"]),
-        latitude: double.parse(json["latitude"]),
+        longitude: json["longitude"],
+        latitude: json["latitude"],
         name: json["name"],
         numberSlots: json["number_slots"],
       );

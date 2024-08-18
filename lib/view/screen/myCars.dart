@@ -6,6 +6,9 @@ import 'package:get/get.dart';
 import 'package:swipe_to/swipe_to.dart';
 
 import 'package:http/http.dart ' as http;
+
+import '../../controller/myCarController.dart';
+import 'addingCar.dart';
 //import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class Mycars extends StatelessWidget {
@@ -26,35 +29,149 @@ class Mycars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+
+    //MyCarsControllerImp controller = Get.put(MyCarsControllerImp());
+
     return Scaffold(
         appBar: AppBar(
           title: Text("My Cars"),
-          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.edit))],
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Get.to(Addingcar());
+                },
+                icon: Icon(Icons.add)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.edit))
+          ],
         ),
-        body: ListView.builder(
-            itemCount: myCars.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: 150,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
                   children: [
-                    Icon(
-                      Icons.car_crash_sharp,
-                      size: 28,
+                    Container(
+                      margin: const EdgeInsets.all(15),
+                      width: 319,
+                      height: 100,
+                      color: Colors.green,
+                      alignment: Alignment.center,
+                      child: const Text(
+                        '\$5200.00',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    Text(
-                      "car Number",
-                      style: TextStyle(fontSize: 30),
+                    Container(
+                      margin: const EdgeInsets.all(15),
+                      width: 319,
+                      height: 100,
+                      color: Colors.green,
+                      alignment: Alignment.center,
+                      child: const Text(
+                        '\$1200.00',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    Text(myCars[index]),
-                    SizedBox(
-                      width: 150,
-                    ),
+                    const SizedBox(height: 24),
                   ],
                 ),
-              );
-            }));
+              ),
+              const Padding(
+                padding: EdgeInsets.all(15),
+                child: Text(
+                  "Recent Transactions",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green),
+                ),
+              ),
+              Center(
+                child:
+                    //FutureBuilder<List<MyCarsControllerImp>>(
+                    //future: controller.getMyCars(),
+                    //builder: (context, snapshot) {
+                    //if (snapshot.hasData) {
+                    //return
+                    ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 10,
+                  // snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading:
+
+                          //  CircleAvatar(
+                          //   child:
+                          //   Image.asset('assets/images/Mercedes.jpg'),
+                          //   // Icon(Icons.car_rental_rounded)
+                          //   //  Image.network(
+                          //   //     snapshot.data![index].avatar.toString()),
+                          // ),
+
+                          ClipRRect(
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: Image.asset(
+                          'assets/images/Mercedes.jpg',
+                          height: 100.0,
+                          width: 100.0,
+                        ),
+                      ),
+                      title: Text("Mercedes Benz"),
+                      // Text(snapshot.data![index].name.toString()),
+                      trailing: Text("300E"),
+                      // Text(snapshot.data![index].amount.toString()),
+                      subtitle: Text("2024"),
+
+                      //Text(snapshot.data![index].date.toString()),
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+        ));
+    //  } else if (snapshot.hasError) {
+    //  return Text('${snapshot.error}');
+    // }
+    //return const CircularProgressIndicator();
   }
 }
+// ),
+
+//  ListView.builder(
+//     itemCount: myCars.length,
+//     itemBuilder: (context, index) {
+//       return Padding(
+//         padding: const EdgeInsets.only(left: 15),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: [
+//             Icon(
+//               Icons.car_crash_sharp,
+//               size: 28,
+//             ),
+//             Text(
+//               "car Number",
+//               style: TextStyle(fontSize: 30),
+//             ),
+//             Text(myCars[index]),
+//             SizedBox(
+//               width: 150,
+//             ),
+//           ],
+//         ),
+//       );
+//     })
