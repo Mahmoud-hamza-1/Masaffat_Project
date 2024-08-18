@@ -1,62 +1,50 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ecommerce_application/controller/home/home_controller.dart';
+import 'package:ecommerce_application/link_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get/get.dart';
 
 import 'package:ecommerce_application/view/screen/map/parking_page.dart';
 import 'package:ecommerce_application/view/screen/placingOrder.dart';
-import 'package:ecommerce_application/view/widget/auth/custombuttonAuth.dart';
 import 'package:ecommerce_application/view/widget/home/customhomeWidget.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
-import 'listSearch.dart';
-import 'listSearch.dart';
-import 'map/map_screen.dart';
 import 'myCars.dart';
 import 'profile.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> imgList = [
-    'assets/images/ads1.png',
-    'assets/images/ads2.png',
-    'assets/images/ads3.png',
-  ];
-
-  int _currentIndex = 0;
-
+  var _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           scrolledUnderElevation: 0,
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Masaffat',
             style: TextStyle(fontFamily: "assets/fonts/Poppins-Black.ttf "),
           ),
           actions: [
-            IconButton(onPressed: (){
-                //here
-                Get.to(Mycars());
-
-
-            },
-             icon: Icon(Icons.car_rental)),
+            IconButton(
+                onPressed: () {
+                  //here
+                  Get.to(const Mycars());
+                },
+                icon: const Icon(Icons.car_rental)),
             IconButton(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.local_parking_rounded,
               ),
             ),
-
           ],
         ),
         body: SingleChildScrollView(
@@ -64,32 +52,47 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Slider Section
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 200.0,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 4),
-                  enlargeCenterPage: true,
-                  aspectRatio: 16 / 9,
-                  viewportFraction: 0.8,
-                  scrollDirection: Axis.horizontal,
-                ),
-                items: imgList
-                    .map((item) => Container(
-                          child: Center(
-                            child: Image.asset(item,
-                                fit: BoxFit.cover, width: 1000),
-                          ),
-                        ))
-                    .toList(),
-              ),
-              SizedBox(height: 16),
+              GetBuilder<HomeControllerImp>(
+                  init: HomeControllerImp(),
+                  builder: (controller) {
+                    return controller.ads == []
+                        ? const SizedBox.shrink()
+                        : CarouselSlider(
+                            options: CarouselOptions(
+                              height: 200.0,
+                              autoPlay: true,
+                              autoPlayInterval: const Duration(seconds: 4),
+                              enlargeCenterPage: true,
+                              aspectRatio: 16 / 9,
+                              viewportFraction: 0.8,
+                              scrollDirection: Axis.horizontal,
+                            ),
+                            items: controller.ads
+                                .map((item) => InkWell(
+                                      onTap: () async {
+                                        await launchUrlString(
+                                            item.imageUrl ?? '');
+                                      },
+                                      child: Image.network(
+                                        '$baseUrl1/${item.imagePath}',
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Center(
+                                          child: Text('$error'),
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                          );
+                  }),
+              const SizedBox(height: 16),
               // Icons Section
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
+              const Padding(
+                padding: EdgeInsets.only(left: 20),
                 child: Text("Choose Service"),
               ),
-              Divider(
+              const Divider(
                 indent: 20,
                 endIndent: 20,
               ),
@@ -98,13 +101,13 @@ class _HomePageState extends State<HomePage> {
                 child: GridView.count(
                   crossAxisCount: 3,
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
                     Customhomewidget(
                       label: "Parking",
                       path: 'assets/icons/parking.png',
                       onPressed: () {
-                        Get.to(ParkingPage());
+                        Get.to(const ParkingPage());
                       },
                     ),
                     Customhomewidget(
@@ -135,41 +138,41 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Divider(
+              const Divider(
                 indent: 20,
                 endIndent: 20,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Middle Banner Section
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 color: Colors.grey[200],
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Pay Less for Car Expenses',
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
                           ElevatedButton(
                             onPressed: () {},
-                            child: Text('Choose Service'),
+                            child: const Text('Choose Service'),
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           ElevatedButton(
                             onPressed: () {},
-                            child: Text('Compare Price'),
+                            child: const Text('Compare Price'),
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           ElevatedButton(
                             onPressed: () {},
-                            child: Text('Get Cashback'),
+                            child: const Text('Get Cashback'),
                           ),
                         ],
                       ),
@@ -177,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Map Section
               Container(
                 height: 300,
@@ -190,14 +193,14 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         bottomNavigationBar: AnimatedBottomNavigationBar(
-          icons: [
+          icons: const [
             Icons.home,
             Icons.person,
             Icons.monetization_on,
             Icons.settings, // Adding an additional icon to make the count even
           ],
-          safeAreaValues:
-              SafeAreaValues(left: true, right: true, bottom: true, top: true),
+          safeAreaValues: const SafeAreaValues(
+              left: true, right: true, bottom: true, top: true),
           inactiveColor: Colors.grey[400],
           activeColor: Colors.red[400],
           splashColor: Colors.red[300],
@@ -217,10 +220,10 @@ class _HomePageState extends State<HomePage> {
                 break;
               case 1:
                 // Navigate to profile screen
-                Get.to(ProfileScreen());
+                Get.to(const ProfileScreen());
                 break;
               case 2:
-                Get.to(Placingorder());
+                Get.to(const Placingorder());
                 break;
               case 3:
                 // Navigate to messages screen

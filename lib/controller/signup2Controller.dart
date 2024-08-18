@@ -5,13 +5,14 @@ import 'package:ecommerce_application/core/class/crud.dart';
 import 'package:ecommerce_application/core/class/statusrequest.dart';
 import 'package:ecommerce_application/core/constant/routesname.dart';
 import 'package:ecommerce_application/data/datasource/remote/auth/signup_data.dart';
+import 'package:ecommerce_application/link_api.dart';
+import 'package:ecommerce_application/main.dart';
 import 'package:ecommerce_application/view/screen/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/handling_data.dart';
 import 'package:http/http.dart ' as http;
-
 
 abstract class SignUP2Controller extends GetxController {
   signup();
@@ -22,34 +23,27 @@ class SignUp2ControllerImp extends SignUP2Controller {
   GlobalKey<FormState> formState = GlobalKey<FormState>();
   final FocusNode usernameFocus = FocusNode();
   final FocusNode emailFocus = FocusNode();
-final FocusNode passFocus= FocusNode(); 
+  final FocusNode passFocus = FocusNode();
   late TextEditingController username = TextEditingController();
   late TextEditingController email = TextEditingController();
   late TextEditingController password = TextEditingController();
- // SignUpData signupData = SignUpData(Get.find());
+  // SignUpData signupData = SignUpData(Get.find());
   List data = [];
   static var token = '';
   StatusRequest statusRequest = StatusRequest.none;
 
-
-
-
   @override
   void signup() async {
-    print("start from here");
-    String url = "http://10.0.2.2:8000/api/register";
-
-    var response = await http.post(Uri.parse(url), headers: <String, String>{
+    var response =
+        await http.post(Uri.parse(AppLink.signupApi), headers: <String, String>{
       'Accept': 'application/json',
-    },
-     body: {
+    }, body: {
       'name': username.text,
       'email': email.text,
       'password': password.text,
     });
 
-
-    print("hello from this line");
+    print("hello from signup");
     print(response.body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -60,16 +54,23 @@ final FocusNode passFocus= FocusNode();
       Map responseBody = jsonDecode(response.body);
       print('ERROR 6');
       print(responseBody);
-      Get.to(HomePage());
+      final userData = {
+        'name': responseBody['data']['name'],
+        'email': responseBody['data']['email'],
+        'roleName': responseBody['roleName'],
+        'access_token': responseBody['access_token'],
+      };
+      await sharedStorage.setString('user', jsonEncode(userData));
+      Get.off(() => HomePage());
       // return Right(responseBody);
     } else {
       Get.defaultDialog(
-        title: 'serverFailure',
-        middleText: 'incorrect Password or Email',
+        middleText: '${jsonDecode(response.body)["message"]}',
       );
-      Get.to(HomePage());
+      // Get.to(HomePage());
       //return const Left(StatusRequest.serverFailure);
-    }}
+    }
+  }
 
   @override
   void onInit() {
