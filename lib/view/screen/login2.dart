@@ -147,9 +147,8 @@ class LoginPage extends StatelessWidget {
                             height: 60,
                             onPressed: () {
                               controller.login();
-                              Get.to(HomePage());
                             },
-                            color: Colors.greenAccent,
+                            color: Colors.red,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50)),

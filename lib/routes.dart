@@ -12,7 +12,7 @@ import 'package:ecommerce_application/view/screen/map/parking_page.dart';
 import 'package:ecommerce_application/view/screen/onboarding.dart';
 import 'package:ecommerce_application/view/screen/splash_screen.dart';
 
-import 'view/screen/auth/login2.dart';
+import 'view/screen/login2.dart';
 
 List<GetPage<dynamic>>? routes = [
   GetPage(name: "/", page: () => const Language(), middlewares: [
