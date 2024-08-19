@@ -67,9 +67,13 @@ class Login2ControllerImp extends Login2Controller {
         title: 'serverFailure',
         middleText: 'incorrect Password or Email',
       );
-      Get.to(HomePage());
+     // Get.to(HomePage());
       //return const Left(StatusRequest.serverFailure);
-    }}
+    }
+          //Get.to(HomePage());
+
+    
+    }
 
 
 
