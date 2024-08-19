@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import '../../../../core/function/checkinternet.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://10.0.2.2:8000/api';
+//const baseUrl = 'http://10.0.2.2:8000/api';
 
 class ParkingData {
   const ParkingData();
