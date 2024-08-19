@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ecommerce_application/core/constant/routesname.dart';
 import 'package:ecommerce_application/link_api.dart';
+import 'package:ecommerce_application/main.dart';
 import 'package:ecommerce_application/view/screen/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,7 +59,15 @@ class Login2ControllerImp extends Login2Controller {
       Map responseBody = jsonDecode(response.body);
       print('ERROR 6');
       print(responseBody);
-       Get.off(() => HomePage());
+      final userData = {
+        'id': responseBody['data']['id'],
+        'name': responseBody['data']['name'],
+        'email': responseBody['data']['email'],
+        'role': responseBody['data']['role'],
+        'access_token': responseBody['access_token'],
+      };
+      await sharedStorage.setString('user', jsonEncode(userData));
+      Get.off(() => HomePage());
       // return Right(responseBody);
     } else {
       Get.defaultDialog(

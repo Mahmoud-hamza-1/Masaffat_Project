@@ -55,6 +55,7 @@ class SignUp2ControllerImp extends SignUP2Controller {
       print('ERROR 6');
       print(responseBody);
       final userData = {
+        'id': responseBody['data']['id'],
         'name': responseBody['data']['name'],
         'email': responseBody['data']['email'],
         'roleName': responseBody['roleName'],

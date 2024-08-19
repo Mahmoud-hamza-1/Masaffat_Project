@@ -29,14 +29,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: controller.appTheme,
-      home: HomePage(),
+      // home: HomePage(),
       // home: const Test(),
       //routes: routes,
 
-      // initialRoute: sharedStorage.getString('user') == null
-      //     ? AppRoute.splash
-      //     : AppRoute.home,
-      // getPages: routes,
+      initialRoute: sharedStorage.getString('user') == null
+          ? AppRoute.splash
+          : AppRoute.home,
+      getPages: routes,
     );
   }
 }

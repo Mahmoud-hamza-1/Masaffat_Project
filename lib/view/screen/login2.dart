@@ -168,7 +168,7 @@ class LoginPage extends StatelessWidget {
                           Text("Don't have an account?"),
                           TextButton(
                             onPressed: () {
-                              Get.to(SignupPage());
+                              Get.off(SignupPage());
                             },
                             child: Text(
                               "Sign up",

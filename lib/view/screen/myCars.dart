@@ -50,54 +50,54 @@ class Mycars extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: double.infinity,
-                height: 150,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.all(15),
-                      width: 319,
-                      height: 100,
-                      color: Colors.green,
-                      alignment: Alignment.center,
-                      child: const Text(
-                        '\$5200.00',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(15),
-                      width: 319,
-                      height: 100,
-                      color: Colors.green,
-                      alignment: Alignment.center,
-                      child: const Text(
-                        '\$1200.00',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(15),
-                child: Text(
-                  "Recent Transactions",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green),
-                ),
-              ),
+              // SizedBox(
+              //   width: double.infinity,
+              //   height: 150,
+              //   child: ListView(
+              //     scrollDirection: Axis.horizontal,
+              //     children: [
+              //       Container(
+              //         margin: const EdgeInsets.all(15),
+              //         width: 319,
+              //         height: 100,
+              //         color: Colors.green,
+              //         alignment: Alignment.center,
+              //         child: const Text(
+              //           '\$5200.00',
+              //           style: TextStyle(
+              //               fontSize: 15,
+              //               color: Colors.white,
+              //               fontWeight: FontWeight.bold),
+              //         ),
+              //       ),
+              //       Container(
+              //         margin: const EdgeInsets.all(15),
+              //         width: 319,
+              //         height: 100,
+              //         color: Colors.green,
+              //         alignment: Alignment.center,
+              //         child: const Text(
+              //           '\$1200.00',
+              //           style: TextStyle(
+              //               fontSize: 15,
+              //               color: Colors.white,
+              //               fontWeight: FontWeight.bold),
+              //         ),
+              //       ),
+              //       const SizedBox(height: 24),
+              //     ],
+              //   ),
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.all(15),
+              //   child: Text(
+              //     "Recent Transactions",
+              //     style: TextStyle(
+              //         fontSize: 14,
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.green),
+              //   ),
+              // ),
               GetBuilder<CarControllerImp>(
                   init: CarControllerImp(),
                   builder: (controller) {
@@ -137,7 +137,7 @@ class Mycars extends StatelessWidget {
                                       width: 100.0,
                                     ),
                                   ),
-                                  title: Text(car.description),
+                                  title: Text(car.description.toString()),
                                   // trailing: const Text("300E"),
                                   // subtitle: const Text("2024"),
                                 );

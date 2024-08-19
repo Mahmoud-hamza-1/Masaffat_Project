@@ -1,12 +1,20 @@
+import 'package:ecommerce_application/controller/map/parking_controller.dart';
+import 'package:ecommerce_application/view/screen/map/parking_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 import 'package:ecommerce_application/data/model/parking_model.dart';
+import 'package:get/get.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key, this.parkings, required this.myLocation});
+  const MapScreen(
+      {super.key,
+      this.parkings,
+      required this.myLocation,
+      required this.carId});
   final List<ParkingModel>? parkings;
   final GeoPoint myLocation;
+  final int carId;
   @override
   State<MapScreen> createState() => _MapScreenState();
 }
@@ -80,22 +88,31 @@ class _MapScreenState extends State<MapScreen> {
                 setState(() {});
               },
               itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(10)),
-                  width: MediaQuery.sizeOf(context).width,
-                  child: ListTile(
-                    onTap: () {},
-                    title: Text('${widget.parkings?[index].name}'),
-                    subtitle: Text(
-                        '${widget.parkings?[index].numberSlots} parking lots'),
-                    leading: const Icon(Icons.local_taxi_outlined),
-                    trailing: Text(
-                        '${roadInfo == null || roadInfo!.duration == null ? '?' : roadInfo!.duration! / 60 * 60} min'),
-                  ),
-                );
+                return GetBuilder<ParkingControllerImp>(builder: (controller) {
+                  return Container(
+                    margin: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(10)),
+                    width: MediaQuery.sizeOf(context).width,
+                    child: ListTile(
+                      onTap: () {
+                        Get.to(() => ParkingDetailsPage(
+                              parkingId: widget.parkings![index].id,
+                              checkIn: controller.checkIn,
+                              checkOut: controller.checkOut,
+                              carId: widget.carId,
+                            ));
+                      },
+                      title: Text('${widget.parkings?[index].name}'),
+                      subtitle: Text(
+                          '${widget.parkings?[index].numberSlots} parking lots'),
+                      leading: const Icon(Icons.local_taxi_outlined),
+                      trailing: Text(
+                          '${roadInfo == null || roadInfo!.duration == null ? '?' : roadInfo!.duration! / 60 * 60} min'),
+                    ),
+                  );
+                });
               },
             ),
           ),
@@ -131,7 +148,7 @@ class _MapScreenState extends State<MapScreen> {
           );
           print('from map is ready 2');
           print(point);
-          // setState(() {});
+          setState(() {});
         },
         // mapIsLoading: const Center(child: CircularProgressIndicator.adaptive()),
         onGeoPointClicked: (p0) async {
@@ -154,7 +171,7 @@ class _MapScreenState extends State<MapScreen> {
             ),
           );
           print(points[index]);
-          // setState(() {});
+          setState(() {});
         },
         controller: controller,
         osmOption: OSMOption(

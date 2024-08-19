@@ -62,10 +62,12 @@ class CarData {
   Future<List<CarModel>?> allCars() async {
     try {
       final data = sharedStorage.getString('user');
+      print(data);
       final user = data != null
           ? jsonDecode(data)
           : throw Exception('you have to login');
       print(user['id']);
+
       var response = await http.get(
           Uri.parse('${AppLink.getVehiclesByUser}/${user['id']}'),
           headers: <String, String>{

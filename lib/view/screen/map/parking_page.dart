@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:ecommerce_application/controller/map/parking_controller.dart';
+import 'package:ecommerce_application/data/datasource/remote/car_data.dart';
 import 'package:ecommerce_application/data/model/parking_model.dart';
+import 'package:ecommerce_application/main.dart';
 import 'package:ecommerce_application/view/screen/map/map_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +33,7 @@ class _ParkingPageState extends State<ParkingPage> {
   var indexCheck = 0;
   DateTime checkIn = DateTime.now();
   DateTime checkOut = DateTime.now();
+  int? idCar;
 
   @override
   Widget build(BuildContext context) {
@@ -47,47 +52,6 @@ class _ParkingPageState extends State<ParkingPage> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     checkInButton(),
-                    //     const SizedBox(
-                    //       width: 15,
-                    //     ),
-                    //     checkOutButton(),
-                    //   ],
-                    // ),
-                    // SizedBox(
-                    //   height: 250,
-                    //   child: PageView(
-                    //     controller: pageController,
-                    //     onPageChanged: (index) {
-                    //       setState(() {
-                    //         indexCheck = index;
-                    //       });
-                    //     },
-                    //     children: [
-                    //       CupertinoTimerPicker(
-                    //         mode: CupertinoTimerPickerMode.hm,
-                    //         initialTimerDuration: checkIn,
-                    //         onTimerDurationChanged: (duration) {
-                    //           setState(() {
-                    //             checkIn = duration;
-                    //           });
-                    //         },
-                    //       ),
-                    //       CupertinoTimerPicker(
-                    //         mode: CupertinoTimerPickerMode.hm,
-                    //         initialTimerDuration: checkOut,
-                    //         onTimerDurationChanged: (duration) {
-                    //           setState(() {
-                    //             checkOut = duration;
-                    //           });
-                    //         },
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     TapRegion(
                       onTapOutside: (event) {
                         setState(() {
@@ -173,6 +137,55 @@ class _ParkingPageState extends State<ParkingPage> {
                         setState(() {
                           indexCheck = 0;
                         });
+                        final cars = await const CarData().allCars();
+                        if (cars == null || cars == []) {
+                          Get.defaultDialog(middleText: 'you have to add car');
+                          return;
+                        }
+                        if (idCar == null) {
+                          Get.defaultDialog(
+                              middleText: 'you have to select car');
+
+                          final res = await showModalBottomSheet<void>(
+                            context: context,
+                            constraints: const BoxConstraints(
+                                maxHeight: 300, minHeight: 300),
+                            isDismissible: false,
+                            builder: (context) {
+                              return SizedBox(
+                                height: 300,
+                                child: ListView.builder(
+                                  itemCount: cars.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      onTap: () {
+                                        setState(() {
+                                          idCar = cars[index].id;
+                                        });
+                                        print(idCar);
+                                        // return true;
+                                        Navigator.pop(context);
+                                      },
+                                      leading: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                        child: Image.asset(
+                                          'assets/images/car.png',
+                                          height: 100.0,
+                                          width: 100.0,
+                                        ),
+                                      ),
+                                      title: Text(
+                                          cars[index].description.toString()),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        }
+
                         await showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
@@ -183,8 +196,6 @@ class _ParkingPageState extends State<ParkingPage> {
                                 child: SizedBox(
                                   height: 320,
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
                                     children: [
                                       DecoratedBox(
                                         decoration: BoxDecoration(
@@ -276,6 +287,7 @@ class _ParkingPageState extends State<ParkingPage> {
                               return MapScreen(
                                 parkings: parkings,
                                 myLocation: myLoc,
+                                carId: idCar!,
                               );
                             },
                           ));
@@ -402,6 +414,42 @@ class _ParkingPageState extends State<ParkingPage> {
                     title: "error", middleText: "can't select this place");
                 return;
               }
+              final cars = await const CarData().allCars();
+              if (cars == null || cars == []) {
+                Get.defaultDialog(middleText: 'you have to add car');
+                return;
+              }
+              await showBottomSheet(
+                context: context,
+                builder: (context) {
+                  return ListView.builder(
+                    itemCount: cars.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () {
+                          setState(() {
+                            idCar = cars[index].id;
+                          });
+                          Navigator.pop(context);
+                        },
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(30.0),
+                          child: Image.asset(
+                            'assets/images/car.png',
+                            height: 100.0,
+                            width: 100.0,
+                          ),
+                        ),
+                        title: Text(cars[index].description.toString()),
+                      );
+                    },
+                  );
+                },
+              );
+              if (idCar == null) {
+                Get.defaultDialog(middleText: 'you have to select car');
+                // return;
+              }
               await showModalBottomSheet<void>(
                 context: context,
                 builder: (BuildContext context) {
@@ -493,6 +541,7 @@ class _ParkingPageState extends State<ParkingPage> {
                 await Get.defaultDialog(
                     title: "alert", middleText: "no parking for this place");
               } else {
+                if (idCar == null) return;
                 navigator?.push(MaterialPageRoute(
                   builder: (context) {
                     return MapScreen(
@@ -500,6 +549,7 @@ class _ParkingPageState extends State<ParkingPage> {
                       myLocation: GeoPoint(
                           latitude: (res[0] as Position).latitude,
                           longitude: (res[0] as Position).longitude),
+                      carId: idCar!,
                     );
                   },
                 ));
