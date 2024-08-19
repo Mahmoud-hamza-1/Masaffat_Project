@@ -1,12 +1,12 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:ecommerce_application/controller/login2Controller.dart';
+import 'package:ecommerce_application/view/screen/auth/signup2.dart';
+import 'package:ecommerce_application/view/widget/auth/customtextform.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:ecommerce_application/controller/login2Controller.dart';
-import 'package:ecommerce_application/view/widget/auth/customtextform.dart';
-
-import '../../../core/function/validinput.dart';
-import 'signup2.dart';
+import '../../core/function/validinput.dart';
+import 'homepage.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -22,22 +22,22 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        //   icon: Icon(
-        //     Icons.arrow_back_ios,
-        //     size: 20,
-        //     color: Colors.black,
-        //   ),
-        // ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 20,
+            color: Colors.black,
+          ),
+        ),
       ),
-      body: SizedBox(
+      body: Container(
         height: MediaQuery.of(context).size.height,
         width: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
               child: Column(
@@ -48,17 +48,17 @@ class LoginPage extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         FadeInUp(
-                            duration: const Duration(milliseconds: 1000),
-                            child: const Text(
+                            duration: Duration(milliseconds: 1000),
+                            child: Text(
                               "Login",
                               style: TextStyle(
                                   fontSize: 30, fontWeight: FontWeight.bold),
                             )),
-                        const SizedBox(
+                        SizedBox(
                           height: 20,
                         ),
                         FadeInUp(
-                            duration: const Duration(milliseconds: 1200),
+                            duration: Duration(milliseconds: 1200),
                             child: Text(
                               "Login to your account",
                               style: TextStyle(
@@ -68,10 +68,10 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: <Widget>[
-                        const SizedBox(
+                        SizedBox(
                           height: 35,
                         ),
                         CustomTextForm(
@@ -86,7 +86,7 @@ class LoginPage extends StatelessWidget {
                           focusnode: controller.emailFocus,
                         ),
 
-                        const SizedBox(
+                        SizedBox(
                           height: 10,
                         ),
 
@@ -119,7 +119,7 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
 
-                        const SizedBox(
+                        SizedBox(
                           height: 15,
                         ),
 
@@ -129,7 +129,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   FadeInUp(
-                      duration: const Duration(milliseconds: 1400),
+                      duration: Duration(milliseconds: 1400),
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40),
                         child: Container(
@@ -147,7 +147,7 @@ class LoginPage extends StatelessWidget {
                             height: 60,
                             onPressed: () {
                               controller.login();
-                              //Get.to(HomePage());
+                              Get.to(HomePage());
                             },
                             color: Colors.greenAccent,
                             elevation: 0,
@@ -162,19 +162,18 @@ class LoginPage extends StatelessWidget {
                         ),
                       )),
                   FadeInUp(
-                      duration: const Duration(milliseconds: 1500),
+                      duration: Duration(milliseconds: 1500),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Text("Don't have an account?"),
+                          Text("Don't have an account?"),
                           TextButton(
                             onPressed: () {
                               Get.to(SignupPage());
                             },
-                            child: const Text(
+                            child: Text(
                               "Sign up",
                               style: TextStyle(
-                                  decoration: TextDecoration.underline,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18),
@@ -188,15 +187,6 @@ class LoginPage extends StatelessWidget {
                 ],
               ),
             ),
-            FadeInUp(
-                duration: Duration(milliseconds: 1200),
-                child: Container(
-                  height: MediaQuery.of(context).size.height / 3,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/background.png'),
-                          fit: BoxFit.cover)),
-                ))
           ],
         ),
       ),
@@ -209,24 +199,23 @@ class LoginPage extends StatelessWidget {
       children: <Widget>[
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
               fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
         ),
-        const SizedBox(
+        SizedBox(
           height: 5,
         ),
         TextField(
           obscureText: obscureText,
           decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade400)),
             border: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade400)),
           ),
         ),
-        const SizedBox(
+        SizedBox(
           height: 30,
         ),
       ],

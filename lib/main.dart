@@ -3,15 +3,15 @@ import 'package:ecommerce_application/core/localization/changelocal.dart';
 import 'package:ecommerce_application/core/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/localization/translation.dart';
 import 'routes.dart';
-import 'test.dart';
-import 'view/screen/OurParkingList.dart';
-import 'view/screen/language.dart';
-import 'view/screen/listSearch.dart';
+
+late SharedPreferences sharedStorage;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  sharedStorage = await SharedPreferences.getInstance();
   await initialServices();
   runApp(const MyApp());
 }
@@ -19,7 +19,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     LocaleController controller = Get.put(LocaleController());
@@ -29,11 +28,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: controller.appTheme,
-      // home: Login(),
+      // home: HomePage(),
       // home: const Test(),
       //routes: routes,
 
-      initialRoute: AppRoute.splash,
+      initialRoute: sharedStorage.getString('user') == null
+          ? AppRoute.splash
+          : AppRoute.home,
       getPages: routes,
     );
   }

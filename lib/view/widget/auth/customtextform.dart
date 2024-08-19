@@ -24,7 +24,6 @@ class CustomTextForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: TextFormField(
@@ -41,21 +40,18 @@ class CustomTextForm extends StatelessWidget {
           hintStyle: const TextStyle(fontSize: 14),
           //labelText: ,
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          labelStyle: TextStyle(
-            color: focusnode.hasFocus ? Colors.grey : Colors.grey),
-          
+          labelStyle:
+              TextStyle(color: focusnode.hasFocus ? Colors.grey : Colors.grey),
+
           enabledBorder: OutlineInputBorder(
-            
-            borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(color: Colors.greenAccent)
-          ),
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(color: Colors.red)),
 
           focusedBorder: OutlineInputBorder(
-            
-            
-            borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(color: Colors.greenAccent,)
-          ),
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(
+                color: Colors.redAccent,
+              )),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 35),
           label: Padding(
@@ -66,10 +62,7 @@ class CustomTextForm extends StatelessWidget {
             child: Icon(iconData),
             onTap: onTapIcon,
           ),
-          
         ),
-
-        
       ),
     );
   }

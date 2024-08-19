@@ -1,34 +1,32 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 import 'package:ecommerce_application/data/model/parking_model.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key, this.parkings});
+  const MapScreen({super.key, this.parkings, required this.myLocation});
   final List<ParkingModel>? parkings;
+  final GeoPoint myLocation;
   @override
   State<MapScreen> createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
-  final controller = MapController.withUserPosition(
-      trackUserLocation: const UserTrackingOption(
-    enableTracking: false,
-    unFollowUser: false,
-  ));
+  late final MapController controller;
 
   late PageController pageController;
-  late GeoPoint myLocation;
   RoadInfo? roadInfo;
   @override
   void initState() {
     pageController = PageController(viewportFraction: 0.9);
-    controller.myLocation().then(
-          (value) => setState(() {
-            myLocation = value;
-          }),
-        );
+    controller = MapController.withPosition(
+      initPosition: widget.myLocation,
+    );
+    // controller.myLocation().then(
+    //       (value) => setState(() {
+    //         myLocation = value;
+    //       }),
+    //     );
     // for (var i = 0; i < points.length; i++) {
     //   controller.addMarker(points[i],
     //       markerIcon: const MarkerIcon(
@@ -70,7 +68,7 @@ class _MapScreenState extends State<MapScreen> {
                     animate: true);
                 controller.clearAllRoads();
                 roadInfo = await controller.drawRoad(
-                  myLocation,
+                  widget.myLocation,
                   GeoPoint(
                     latitude: widget.parkings![value].latitude,
                     longitude: widget.parkings![value].longitude,
@@ -112,7 +110,7 @@ class _MapScreenState extends State<MapScreen> {
         onMapIsReady: (p0) async {
           final point = GeoPoint(
             latitude: widget.parkings![0].latitude,
-            longitude: widget.parkings![0].latitude,
+            longitude: widget.parkings![0].longitude,
           );
           await controller.moveTo(
             point,
@@ -131,14 +129,18 @@ class _MapScreenState extends State<MapScreen> {
               roadColor: Colors.red,
             ),
           );
-          setState(() {});
+          print('from map is ready 2');
+          print(point);
+          // setState(() {});
         },
         // mapIsLoading: const Center(child: CircularProgressIndicator.adaptive()),
         onGeoPointClicked: (p0) async {
-          final points = widget.parkings!
-              .map(
-                  (e) => GeoPoint(latitude: e.latitude, longitude: e.longitude))
-              .toList();
+          print(widget.parkings![0]);
+          final points = widget.parkings!.map((e) {
+            print('from clicked');
+            print(GeoPoint(latitude: e.latitude, longitude: e.longitude));
+            return GeoPoint(latitude: e.latitude, longitude: e.longitude);
+          }).toList();
           final index = points.indexOf(p0);
           pageController.animateToPage(index,
               duration: const Duration(milliseconds: 400),
@@ -151,7 +153,8 @@ class _MapScreenState extends State<MapScreen> {
               roadColor: Colors.red,
             ),
           );
-          setState(() {});
+          print(points[index]);
+          // setState(() {});
         },
         controller: controller,
         osmOption: OSMOption(
@@ -215,96 +218,96 @@ class _MapScreenState extends State<MapScreen> {
   }
 }
 
-class MapWidget extends StatelessWidget {
-  final MapController controller;
-  final PageController pageController;
-  final List<GeoPoint> points;
-  // RoadInfo? roadInfo;
+// class MapWidget extends StatelessWidget {
+//   final MapController controller;
+//   final PageController pageController;
+//   final List<GeoPoint> points;
+//   // RoadInfo? roadInfo;
 
-  const MapWidget(
-      {super.key,
-      required this.controller,
-      required this.pageController,
-      required this.points});
+//   const MapWidget(
+//       {super.key,
+//       required this.controller,
+//       required this.pageController,
+//       required this.points});
 
-  @override
-  Widget build(BuildContext context) {
-    return OSMFlutter(
-      onMapIsReady: (p0) async {
-        // await controller.moveTo(points[0], animate: true);
-        await pageController.animateToPage(
-          0,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.ease,
-        );
-        controller.clearAllRoads();
-        await controller.drawRoad(
-          await controller.myLocation(),
-          points[0],
-          roadOption: const RoadOption(
-            roadColor: Colors.red,
-          ),
-        );
-      },
-      // mapIsLoading: const Center(child: CircularProgressIndicator.adaptive()),
-      onGeoPointClicked: (p0) async {
-        final index = points.indexOf(p0);
-        pageController.animateToPage(index,
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeInOut);
-        controller.clearAllRoads();
-        await controller.drawRoad(
-          await controller.myLocation(),
-          points[index],
-          roadOption: const RoadOption(
-            roadColor: Colors.red,
-          ),
-        );
-      },
-      controller: controller,
-      osmOption: OSMOption(
-        showZoomController: true,
-        userTrackingOption: const UserTrackingOption(
-          enableTracking: true,
-          unFollowUser: true,
-        ),
-        zoomOption: const ZoomOption(
-          initZoom: 15,
-          minZoomLevel: 2,
-          maxZoomLevel: 19,
-          stepZoom: 1.0,
-        ),
-        userLocationMarker: UserLocationMaker(
-          personMarker: const MarkerIcon(
-            icon: Icon(
-              Icons.location_history_rounded,
-              color: Colors.red,
-              size: 48,
-            ),
-          ),
-          directionArrowMarker: const MarkerIcon(
-            icon: Icon(
-              Icons.double_arrow,
-              size: 48,
-            ),
-          ),
-        ),
-        staticPoints: [
-          for (int i = 0; i < points.length; i++)
-            StaticPositionGeoPoint(
-                "id $i",
-                MarkerIcon(
-                  iconWidget: InkWell(
-                      onTap: () async {
-                        await pageController.animateToPage(i,
-                            duration: const Duration(milliseconds: 400),
-                            curve: Curves.easeInOut);
-                      },
-                      child: const Icon(Icons.location_on)),
-                ),
-                [points[i]])
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return OSMFlutter(
+//       onMapIsReady: (p0) async {
+//         // await controller.moveTo(points[0], animate: true);
+//         await pageController.animateToPage(
+//           0,
+//           duration: const Duration(milliseconds: 500),
+//           curve: Curves.ease,
+//         );
+//         controller.clearAllRoads();
+//         await controller.drawRoad(
+//           await controller.myLocation(),
+//           points[0],
+//           roadOption: const RoadOption(
+//             roadColor: Colors.red,
+//           ),
+//         );
+//       },
+//       // mapIsLoading: const Center(child: CircularProgressIndicator.adaptive()),
+//       onGeoPointClicked: (p0) async {
+//         final index = points.indexOf(p0);
+//         pageController.animateToPage(index,
+//             duration: const Duration(milliseconds: 400),
+//             curve: Curves.easeInOut);
+//         controller.clearAllRoads();
+//         await controller.drawRoad(
+//           await controller.myLocation(),
+//           points[index],
+//           roadOption: const RoadOption(
+//             roadColor: Colors.red,
+//           ),
+//         );
+//       },
+//       controller: controller,
+//       osmOption: OSMOption(
+//         showZoomController: true,
+//         userTrackingOption: const UserTrackingOption(
+//           enableTracking: true,
+//           unFollowUser: true,
+//         ),
+//         zoomOption: const ZoomOption(
+//           initZoom: 15,
+//           minZoomLevel: 2,
+//           maxZoomLevel: 19,
+//           stepZoom: 1.0,
+//         ),
+//         userLocationMarker: UserLocationMaker(
+//           personMarker: const MarkerIcon(
+//             icon: Icon(
+//               Icons.location_history_rounded,
+//               color: Colors.red,
+//               size: 48,
+//             ),
+//           ),
+//           directionArrowMarker: const MarkerIcon(
+//             icon: Icon(
+//               Icons.double_arrow,
+//               size: 48,
+//             ),
+//           ),
+//         ),
+//         staticPoints: [
+//           for (int i = 0; i < points.length; i++)
+//             StaticPositionGeoPoint(
+//                 "id $i",
+//                 MarkerIcon(
+//                   iconWidget: InkWell(
+//                       onTap: () async {
+//                         await pageController.animateToPage(i,
+//                             duration: const Duration(milliseconds: 400),
+//                             curve: Curves.easeInOut);
+//                       },
+//                       child: const Icon(Icons.location_on)),
+//                 ),
+//                 [points[i]])
+//         ],
+//       ),
+//     );
+//   }
+// }

@@ -21,7 +21,7 @@ class SignupPage extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
             size: 20,
             color: Colors.black,
@@ -30,7 +30,7 @@ class SignupPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 40),
           height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
           child: Column(
@@ -41,20 +41,23 @@ class SignupPage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     FadeInUp(
-                        duration: Duration(milliseconds: 1000),
-                        child: Text(
+                        duration: const Duration(milliseconds: 1000),
+                        child: const Text(
                           "Sign up",
                           style: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold),
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     FadeInUp(
-                        duration: Duration(milliseconds: 1200),
+                        duration: const Duration(milliseconds: 1200),
                         child: Text(
                           "Create an account, It's free",
-                          style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+                          style:
+                              TextStyle(fontSize: 15, color: Colors.grey[700]),
+                          style:
+                              TextStyle(fontSize: 15, color: Colors.grey[700]),
                         )),
                   ],
                 ),
@@ -80,7 +83,7 @@ class SignupPage extends StatelessWidget {
                     },
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 13,
                   ),
 
@@ -95,7 +98,7 @@ class SignupPage extends StatelessWidget {
                       focusnode: controller.emailFocus,
                       iconData: Icons.email_outlined),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 13,
                   ),
 
@@ -113,12 +116,12 @@ class SignupPage extends StatelessWidget {
                 ],
               ),
               FadeInUp(
-                  duration: Duration(milliseconds: 1500),
+                  duration: const Duration(milliseconds: 1500),
                   child: Container(
-                    padding: EdgeInsets.only(top: 3, left: 3),
+                    padding: const EdgeInsets.only(top: 3, left: 3),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        border: Border(
+                        border: const Border(
                           bottom: BorderSide(color: Colors.black),
                           top: BorderSide(color: Colors.black),
                           left: BorderSide(color: Colors.black),
@@ -130,11 +133,11 @@ class SignupPage extends StatelessWidget {
                       onPressed: () {
                         controller.signup();
                       },
-                      color: Colors.greenAccent,
+                      color: Colors.red,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50)),
-                      child: Text(
+                      child: const Text(
                         "Sign up",
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 18),
@@ -142,24 +145,24 @@ class SignupPage extends StatelessWidget {
                     ),
                   )),
               FadeInUp(
-                  duration: Duration(milliseconds: 1600),
+                  duration: const Duration(milliseconds: 1600),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("Already have an account?"),
+                      const Text("Already have an account?"),
 
                       TextButton(
-                            onPressed: () {
-                              Get.to(LoginPage());
-                            },
-                            child: Text(
-                              "Login",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18),
-                            ),
-                          ),
+                        onPressed: () {
+                          Get.to(LoginPage());
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18),
+                        ),
+                      ),
 
                       // Text(
                       //   " Login",
@@ -181,23 +184,24 @@ class SignupPage extends StatelessWidget {
       children: <Widget>[
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         TextField(
           obscureText: obscureText,
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade400)),
             border: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade400)),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
       ],

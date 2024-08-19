@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce_application/data/model/parking_model.dart';
+import 'package:ecommerce_application/link_api.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/function/checkinternet.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'http://192.168.14.139:8000/api';
+const baseUrl = 'http://10.0.2.2:8000/api';
 
 class ParkingData {
   const ParkingData();
@@ -18,7 +19,7 @@ class ParkingData {
     try {
       if (await checkInternet()) {
         var response = await http.post(
-          Uri.parse("$baseUrl/searchParkingsWithinRadius"),
+          Uri.parse(AppLink.searchParkingRadius),
           headers: <String, String>{
             'Accept': 'application/json',
           },

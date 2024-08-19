@@ -38,16 +38,14 @@ class Login2ControllerImp extends Login2Controller {
   @override
   void login() async {
     print("start from here");
-    String url = "http://10.0.2.2:8000/api/login";
 
-    var response = await http.post(Uri.parse(url), headers: <String, String>{
+    var response =
+        await http.post(Uri.parse(AppLink.loginApi), headers: <String, String>{
       'Accept': 'application/json',
-    },
-     body: {
+    }, body: {
       'email': email.text,
       'password': password.text,
     });
-
 
     print("hello from this line");
     print(response.body);
@@ -60,24 +58,17 @@ class Login2ControllerImp extends Login2Controller {
       Map responseBody = jsonDecode(response.body);
       print('ERROR 6');
       print(responseBody);
-      Get.to(HomePage());
+      Get.off(() => const HomePage());
       // return Right(responseBody);
     } else {
       Get.defaultDialog(
-        title: 'serverFailure',
+        // title: 'serverFailure',
         middleText: 'incorrect Password or Email',
       );
-     // Get.to(HomePage());
+      // Get.to(HomePage());
       //return const Left(StatusRequest.serverFailure);
     }
-          //Get.to(HomePage());
-
-    
-    }
-
-
-
-
+  }
 
   @override
   goToForgetPassword() {
