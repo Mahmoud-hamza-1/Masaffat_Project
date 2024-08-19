@@ -13,6 +13,8 @@ import '../../data/datasource/remote/auth/login_data.dart';
 import '../../data/handling_data.dart';
 import 'package:http/http.dart ' as http;
 
+import '../view/screen/qrReader.dart';
+
 abstract class Login2Controller extends GetxController {
   login();
   goToSignUp();
@@ -30,6 +32,8 @@ class Login2ControllerImp extends Login2Controller {
   StatusRequest statusRequest = StatusRequest.none;
   var emailFocus = new FocusNode();
   var passFocus = new FocusNode();
+
+  static var user_id;
 
   @override
   goToSignUp() {
@@ -68,6 +72,13 @@ class Login2ControllerImp extends Login2Controller {
       };
       await sharedStorage.setString('user', jsonEncode(userData));
       Get.off(() => HomePage());
+
+      if (responseBody["data"]["role"] == "employee")
+        Get.off(() => QRScanner());
+      else {
+        user_id = responseBody['data']['id'];
+        Get.off(() => HomePage());
+      }
       // return Right(responseBody);
     } else {
       Get.defaultDialog(

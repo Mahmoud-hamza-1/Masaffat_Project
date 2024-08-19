@@ -1,4 +1,4 @@
-const String _baseUrl = "http://192.168.1.103:8000/api";
+const String _baseUrl = "http://10.0.2.2:8000/api";
 const String baseUrl1 = "http://192.168.1.103:8000";
 
 class AppLink {

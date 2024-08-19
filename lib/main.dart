@@ -1,12 +1,15 @@
 import 'package:ecommerce_application/core/constant/routesname.dart';
 import 'package:ecommerce_application/core/localization/changelocal.dart';
 import 'package:ecommerce_application/core/services/services.dart';
+import 'package:ecommerce_application/view/screen/addingCar.dart';
+import 'package:ecommerce_application/view/screen/login2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/localization/translation.dart';
 import 'routes.dart';
 import 'view/screen/homepage.dart';
+import 'view/screen/qrReader.dart';
 
 late SharedPreferences sharedStorage;
 
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: controller.appTheme,
-      // home: HomePage(),
+      // home: QRScanner(),
       // home: const Test(),
       //routes: routes,
 
