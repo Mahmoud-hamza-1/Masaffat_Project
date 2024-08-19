@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart' as cc;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http/http.dart ' as http;
+
+import '../../controller/login2Controller.dart';
 
 class Addingcar extends StatefulWidget {
   const Addingcar({super.key});
@@ -15,8 +22,13 @@ class _AddingcarState extends State<Addingcar> {
   Widget build(BuildContext context) {
     final TextEditingController plat_number = TextEditingController();
     final TextEditingController description = TextEditingController();
-    final TextEditingController color = TextEditingController();
-    final TextEditingController category = TextEditingController();
+
+    // String? colorrr = "White";
+    //TextEditingController colorr = TextEditingController();
+    //final TextEditingController category = TextEditingController();
+
+    String? Colourselectedvalue;
+    String? Categoryselectedvalue;
 
     // File? image;
     // final imagepicker = ImagePicker();
@@ -132,45 +144,163 @@ class _AddingcarState extends State<Addingcar> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(
-                      controller: color,
-                      decoration: InputDecoration(
-                        label: const Text("Colour"),
-                        prefixIcon: const Icon(Icons.color_lens_outlined),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: const BorderSide(color: Colors.blue)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: const BorderSide(
-                              color: Colors.blue,
-                            )),
-                      ),
+
+                    DropdownMenu(
+                        initialSelection: Colourselectedvalue,
+                        width: 372,
+                        inputDecorationTheme: InputDecorationTheme(
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: const BorderSide(color: Colors.blue)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: const BorderSide(
+                                color: Colors.blue,
+                              )),
+                        ),
+                        // controller: colorr,
+                        enableSearch: false,
+                        onSelected: (String? newvalue) {
+                          setState(() {
+                            Colourselectedvalue = newvalue;
+                          });
+                        },
+                        dropdownMenuEntries: <DropdownMenuEntry<String>>[
+                          DropdownMenuEntry(value: "1", label: "white"),
+                          DropdownMenuEntry(value: "2", label: "Black"),
+                          DropdownMenuEntry(value: "3", label: "Silver"),
+                          DropdownMenuEntry(value: "4", label: "Gray"),
+                          DropdownMenuEntry(value: "5", label: "Blue"),
+                          DropdownMenuEntry(value: "6", label: "Red"),
+                          DropdownMenuEntry(value: "7", label: "Green"),
+                          DropdownMenuEntry(value: "8", label: "Brown"),
+                          DropdownMenuEntry(value: "9", label: "Gold"),
+                          DropdownMenuEntry(value: "10", label: "Purble"),
+                        ])
+
+                    // TextFormField(
+                    //   controller: color,
+                    //   decoration: InputDecoration(
+                    //     label: const Text("Colour"),
+                    //     prefixIcon: const Icon(Icons.color_lens_outlined),
+                    //     enabledBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(25),
+                    //         borderSide: const BorderSide(color: Colors.blue)),
+                    //     focusedBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(25),
+                    //         borderSide: const BorderSide(
+                    //           color: Colors.blue,
+                    //         )),
+                    //   ),
+                    // ),
+                    ,
+
+                    SizedBox(
+                      height: 20,
                     ),
+
+                    DropdownMenu(
+                        initialSelection: Categoryselectedvalue,
+                        width: 372,
+                        inputDecorationTheme: InputDecorationTheme(
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: const BorderSide(color: Colors.blue)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: const BorderSide(
+                                color: Colors.blue,
+                              )),
+                        ),
+                        //  controller: category,
+                        enableSearch: false,
+                        // label: Text("Car"),
+                        onSelected: (category) {
+                          setState(() {
+                            Categoryselectedvalue = category;
+                          });
+                        },
+                        dropdownMenuEntries: <DropdownMenuEntry<String>>[
+                          DropdownMenuEntry(value: "1", label: "Car"),
+                          DropdownMenuEntry(value: "2", label: "puck up Truck"),
+                          DropdownMenuEntry(value: "3", label: "Large Truck"),
+                          DropdownMenuEntry(value: "4", label: "Motor cycle"),
+                          DropdownMenuEntry(value: "5", label: "Byscle"),
+                          DropdownMenuEntry(
+                              value: "6", label: "Delivery truck"),
+                        ]),
+
                     const SizedBox(height: 20),
-                    TextFormField(
-                      controller: category,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        label: const Text("category"),
-                        prefixIcon: const Icon(Icons.bus_alert_outlined),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: const BorderSide(color: Colors.blue)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: const BorderSide(
-                              color: Colors.blue,
-                            )),
-                      ),
-                    ),
+
+                    // TextFormField(
+                    //   controller: category,
+                    //   obscureText: true,
+                    //   decoration: InputDecoration(
+                    //     label: const Text("category"),
+                    //     prefixIcon: const Icon(Icons.bus_alert_outlined),
+                    //     enabledBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(25),
+                    //         borderSide: const BorderSide(color: Colors.blue)),
+                    //     focusedBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(25),
+                    //         borderSide: const BorderSide(
+                    //           color: Colors.blue,
+                    //         )),
+                    //   ),
+                    // ),
                     const SizedBox(height: 30),
 
                     // -- Form Submit Button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          print(Colourselectedvalue);
+                          print(Categoryselectedvalue);
+
+                          print(plat_number.text);
+                          print(description.text);
+                          print(Login2ControllerImp.user_id);
+
+                          print("start from here");
+
+                          var response = await http.post(
+                              Uri.parse(
+                                  'http://10.0.2.2:8000/api/storeVehicle'),
+                              headers: <String, String>{
+                                'Accept': 'application/json',
+                              },
+                              body: {
+                                'plat_number': '44444',
+                                'description': 'Mercedes',
+                                'color_vehicle_id': '1',
+                                'vehicle_category_id': '2',
+                                'user_id': Login2ControllerImp.user_id,
+                              });
+
+                          print("hello from this line");
+                          print(response.body);
+
+                          if (response.statusCode == 200 ||
+                              response.statusCode == 201) {
+                            print("popopop");
+                            print(response.body);
+                            print(response);
+                            print('ERROR 5');
+                            Map responseBody = jsonDecode(response.body);
+                            print('ERROR 6');
+                            print(responseBody);
+
+                            // return Right(responseBody);
+                          } else {
+                            Get.defaultDialog(
+                              // title: 'serverFailure',
+                              middleText: 'failed to add car',
+                            );
+                            // Get.to(HomePage());
+                            //return const Left(StatusRequest.serverFailure);
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                             side: BorderSide.none,

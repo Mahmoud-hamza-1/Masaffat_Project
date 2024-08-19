@@ -18,12 +18,7 @@ class QRScanner extends StatefulWidget {
 
 class QRScannerState extends State<QRScanner> {
   String? scanResult = "Unknown";
-
-  Future<void> startBarcodeScanStream() async {
-    FlutterBarcodeScanner.getBarcodeStreamReceiver(
-            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
-        .listen((barcode) => print(barcode));
-  }
+  String? barcodeScanRessult = "Unknown";
 
   Future<void> scanQR() async {
     String barcodeScanRes;
@@ -31,7 +26,7 @@ class QRScannerState extends State<QRScanner> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#00ffff', 'Cancel', true, ScanMode.QR);
-      print("///////////////////////");
+      print("here is the res :");
       print(barcodeScanRes);
       scanResult = "succed";
       print("///////////////////////");
@@ -46,30 +41,12 @@ class QRScannerState extends State<QRScanner> {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
-    setState(() {
-      barcodeScanRes = barcodeScanRes;
-    });
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> scanBarcodeNormal() async {
-    String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-      print(barcodeScanRes);
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+    print("here is the res :");
 
     setState(() {
       barcodeScanRes = barcodeScanRes;
+      barcodeScanRessult = barcodeScanRessult;
+      print("here is the res2 :");
     });
   }
 
@@ -87,62 +64,12 @@ class QRScannerState extends State<QRScanner> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         ElevatedButton(
-                            onPressed: () => scanBarcodeNormal(),
-                            child: Text('Start barcode scan')),
-                        ElevatedButton(
                             onPressed: () => scanQR(),
                             child: Text('Start QR scan')),
-                        ElevatedButton(
-                            onPressed: () => startBarcodeScanStream(),
-                            child: Text('Start barcode scan stream')),
-                        Text('Scan result : $scanResult\n',
+                        Text(
+                            'Scan result : $scanResult  && /n $barcodeScanRessult',
                             style: TextStyle(fontSize: 20))
                       ]));
             })));
-
-    //   Future<void> startBarcodeScanStream() async {
-    //   FlutterBarcodeScanner.getBarcodeStreamReceiver(
-    //           '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
-    //       .listen((barcode) => print(barcode));
-    // }
-
-    //   Future<void> scanCode() async {
-    //     String barcodeScanRes;
-    //     try{
-    //     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "cancel", true, ScanMode.QR);
-    //     print(barcodeScanRes);
-    //     }on PlatformException{
-    //       barcodeScanRes = "failed to scan";
-    //     }
-    //     setState(() {
-    //       scanResult = barcodeScanRes;
-    //        print(barcodeScanRes);
-    //     });
-    //   }
-    // @override
-    // Widget build(BuildContext context) {
-
-    //   return Scaffold(
-
-    //     appBar:  AppBar(
-    //       title: Text('QR Code Scannerrator'),
-    //       actions: [
-
-    //         IconButton(onPressed: (){
-    //         scanCode();
-    //         },
-    //          icon: Icon(Icons.qr_code))
-    //       ],
-
-    //     ),
-
-    //     // body: MobileScanner(
-    //     //   onDetect: (capture){
-
-    //     //   },
-
-    //    // ),
-
-    //   );
   }
 }
