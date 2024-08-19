@@ -104,7 +104,10 @@ class _MapScreenState extends State<MapScreen> {
                               carId: widget.carId,
                             ));
                       },
-                      title: Text('${widget.parkings?[index].name}'),
+                      title: Text(
+                        '${widget.parkings?[index].name}',
+                        style: TextStyle(overflow: TextOverflow.ellipsis),
+                      ),
                       subtitle: Text(
                           '${widget.parkings?[index].numberSlots} parking lots'),
                       leading: const Icon(Icons.local_taxi_outlined),

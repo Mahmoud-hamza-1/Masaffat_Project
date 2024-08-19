@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ecommerce_application/view/screen/Updateprofile.dart';
 import 'package:ecommerce_application/view/screen/qrGenerater.dart';
 import 'package:ecommerce_application/view/widget/home/customProfileMenuWidget.dart';
@@ -45,7 +47,7 @@ class QRScannerState extends State<QRScanner> {
 
     setState(() {
       barcodeScanRes = barcodeScanRes;
-      barcodeScanRessult = barcodeScanRessult;
+      barcodeScanRessult = barcodeScanRes;
       print("here is the res2 :");
     });
   }
@@ -67,8 +69,13 @@ class QRScannerState extends State<QRScanner> {
                             onPressed: () => scanQR(),
                             child: Text('Start QR scan')),
                         Text(
-                            'Scan result : $scanResult  && /n $barcodeScanRessult',
-                            style: TextStyle(fontSize: 20))
+                          'Scan result : $scanResult  && \n $barcodeScanRessult',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        barcodeScanRessult != null
+                            ? Text(
+                                'the booking has been done succesfully\n from: ${jsonDecode(barcodeScanRessult!)['from']} \n to:${jsonDecode(barcodeScanRessult!)['to']}')
+                            : SizedBox.shrink()
                       ]));
             })));
   }

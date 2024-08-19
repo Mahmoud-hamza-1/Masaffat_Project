@@ -17,4 +17,6 @@ class AppRoute {
   static const parking = '/parking';
 
   static const home = '/home';
+
+  static const qr = '/qrReader';
 }

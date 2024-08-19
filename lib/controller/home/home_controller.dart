@@ -19,14 +19,14 @@ class HomeControllerImp extends HomeController {
   @override
   Future<void> onInit() async {
     await getAds();
-    final user = jsonDecode(sharedStorage.getString('user') ?? '');
-    final response =
-        await get(Uri.parse('$baseUrl1/api/latestBooking/${user['id']}'));
-    final data = jsonDecode(response.body);
-    if (response.statusCode == 200 && data['qr_code'] != null) {
-      svgPath = data['qr_code'] as String;
-      update();
-    }
+    // final user = jsonDecode(sharedStorage.getString('user') ?? '');
+    // final response =
+    //     await get(Uri.parse('$baseUrl1/api/latestBooking/${user['id']}'));
+    // final data = jsonDecode(response.body);
+    // if (response.statusCode == 200 && data['qr_code'] != null) {
+    //   svgPath = data['qr_code'] as String;
+    //   update();
+    // }
     super.onInit();
   }
 

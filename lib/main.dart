@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ecommerce_application/core/constant/routesname.dart';
 import 'package:ecommerce_application/core/localization/changelocal.dart';
 import 'package:ecommerce_application/core/services/services.dart';
@@ -38,6 +40,8 @@ class MyApp extends StatelessWidget {
 
       initialRoute: sharedStorage.getString('user') == null
           ? AppRoute.splash
+          // : jsonDecode(sharedStorage.getString('user')!)['role'] == 'employee'
+          //     ? AppRoute.login
           : AppRoute.home,
       getPages: routes,
     );

@@ -84,6 +84,10 @@ class _ParkingDetailsPageState extends State<ParkingDetailsPage> {
             Get.defaultDialog(
               middleText: jsonDecode(response.body)["message"],
             );
+            setState(() {
+              isLoading = false;
+            });
+            return;
           }
           svgPath =
               "$baseUrl1/${jsonDecode(response.body)["booking"]['booking']['qr_code']}";
@@ -168,15 +172,42 @@ class _ParkingDetailsPageState extends State<ParkingDetailsPage> {
                                   'accept': 'application/json',
                                 },
                                 body: {
-                                  "user_id": user['id'],
-                                  "from": widget.checkIn,
-                                  "to": widget.checkOut,
+                                  "vehicle_id": widget.carId.toString(),
+                                  "from":
+                                      DateFormat.Hm().format(widget.checkIn),
+                                  "to": DateFormat.Hm().format(widget.checkOut),
                                 },
                               );
-                              print(response);
-                              setState(() {
-                                isLoading = false;
-                              });
+                              if (response.statusCode == 200 ||
+                                  response.statusCode == 201) {
+                                print(response.body);
+                                if (jsonDecode(response.body)["message"] !=
+                                    '') {
+                                  Get.defaultDialog(
+                                    middleText:
+                                        jsonDecode(response.body)["message"],
+                                  );
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  return;
+                                }
+                                svgPath =
+                                    "$baseUrl1/${jsonDecode(response.body)["booking"]['booking']['qr_code']}";
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                print(svgPath);
+                              } else {
+                                print(response.body);
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                Get.defaultDialog(
+                                  middleText:
+                                      jsonDecode(response.body)["message"],
+                                );
+                              }
                             },
                             title: Text(
                                 'from: ${listData[index]['from']} \t to:${listData[index]['to']}'),

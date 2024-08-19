@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:ecommerce_application/link_api.dart';
+import 'package:ecommerce_application/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart' as cc;
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart ' as http;
 
@@ -18,17 +19,15 @@ class Addingcar extends StatefulWidget {
 }
 
 class _AddingcarState extends State<Addingcar> {
+  final TextEditingController plat_number = TextEditingController();
+  final TextEditingController description = TextEditingController();
+  String? Colourselectedvalue;
+  String? Categoryselectedvalue;
   @override
   Widget build(BuildContext context) {
-    final TextEditingController plat_number = TextEditingController();
-    final TextEditingController description = TextEditingController();
-
     // String? colorrr = "White";
     //TextEditingController colorr = TextEditingController();
     //final TextEditingController category = TextEditingController();
-
-    String? Colourselectedvalue;
-    String? Categoryselectedvalue;
 
     // File? image;
     // final imagepicker = ImagePicker();
@@ -218,6 +217,7 @@ class _AddingcarState extends State<Addingcar> {
                         onSelected: (category) {
                           setState(() {
                             Categoryselectedvalue = category;
+                            print(Categoryselectedvalue);
                           });
                         },
                         dropdownMenuEntries: <DropdownMenuEntry<String>>[
@@ -260,24 +260,33 @@ class _AddingcarState extends State<Addingcar> {
 
                           print(plat_number.text);
                           print(description.text);
-                          print(Login2ControllerImp.user_id);
+                          print(jsonDecode(
+                                  sharedStorage.getString('user') ?? '')['id']
+                              .toString());
 
                           print("start from here");
 
                           var response = await http.post(
-                              Uri.parse(
-                                  'http://10.0.2.2:8000/api/storeVehicle'),
+                              Uri.parse('$baseUrl1/api/storeVehicle'),
                               headers: <String, String>{
                                 'Accept': 'application/json',
                               },
                               body: {
-                                'plat_number': '44444',
-                                'description': 'Mercedes',
-                                'color_vehicle_id': '1',
-                                'vehicle_category_id': '2',
-                                'user_id': Login2ControllerImp.user_id,
+                                'plat_number': plat_number.text,
+                                'description': description.text,
+                                'color_vehicle_id':
+                                    int.parse(Colourselectedvalue ?? '0'),
+                                'vehicle_category_id':
+                                    int.parse(Categoryselectedvalue ?? '0'),
+                                'user_id': '1'
+                                // jsonDecode(
+                                //         sharedStorage.getString('user') ??
+                                //             '')['id']
+                                //     .toString(),
                               });
-
+                          print(jsonDecode(
+                                  sharedStorage.getString('user') ?? '')['id']
+                              .toString());
                           print("hello from this line");
                           print(response.body);
 

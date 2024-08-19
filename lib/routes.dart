@@ -1,4 +1,5 @@
 import 'package:ecommerce_application/view/screen/homepage.dart';
+import 'package:ecommerce_application/view/screen/qrReader.dart';
 import 'package:get/get.dart';
 
 import 'package:ecommerce_application/core/constant/routesname.dart';
@@ -56,5 +57,9 @@ List<GetPage<dynamic>>? routes = [
   GetPage(
     name: AppRoute.parking,
     page: () => const ParkingPage(),
+  ),
+  GetPage(
+    name: AppRoute.qr,
+    page: () => const QRScanner(),
   ),
 ];
